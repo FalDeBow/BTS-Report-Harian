@@ -3,129 +3,440 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laporan Kunjungan Lapangan BTS</title>
-  <!-- Bootstrap 5 CSS untuk Tampilan Rapi & Responsive -->
-  <link href="https://cdn.jsdelivr.net/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <title>BTS Report Daily</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .card { border-radius: 12px; border: none; }
-    .card-header { border-top-left-radius: 12px !important; border-top-right-radius: 12px !important; }
-    .form-label { font-weight: 600; color: #333; }
-    .btn-primary { background-color: #0d6efd; border: none; padding: 10px 20px; font-weight: 600; }
-    .btn-primary:hover { background-color: #0b5ed7; }
+    :root {
+      --bg-color: #f2efe9;
+      --card-bg: #ffffff;
+      --border-color: #e2ded7;
+      --text-muted: #8c8984;
+      --text-dark: #1a1a1a;
+      --accent-black: #181818;
+      --pill-bg: #222222;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      padding: 12px;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Top Floating Header */
+    .top-header {
+      background-color: var(--pill-bg);
+      color: #fff;
+      border-radius: 30px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-box {
+      background-color: #1d61e8;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .header-sub {
+      font-size: 11px;
+      color: #a0a0a0;
+      font-weight: 500;
+    }
+
+    .badge-draft {
+      background-color: #383838;
+      color: #b0b0b0;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Date Bar */
+    .date-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+    }
+
+    .current-date-txt {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7a7772;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .btn-hari-baru {
+      background: #e5e1d8;
+      border: 1px solid #d4cebe;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #4a4843;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    /* Section Label Divider */
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: #ddd9d0;
+    }
+
+    /* Main Form Card Grid */
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .grid-col {
+      padding: 10px 14px;
+    }
+
+    .grid-col:first-child {
+      border-right: 1px solid var(--border-color);
+    }
+
+    .input-box {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .input-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    .custom-input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      background: transparent;
+      padding: 2px 0;
+    }
+
+    .custom-input::placeholder {
+      color: #b5b1aa;
+      font-weight: 500;
+    }
+
+    /* Dashed Button Container */
+    .dashed-box {
+      border: 2px dashed #d8d3c8;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      color: #7a7772;
+      font-size: 13px;
+      font-weight: 700;
+      background: #fcfbf9;
+      cursor: pointer;
+      margin: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .dashed-box:active {
+      background: #f0ebe1;
+    }
+
+    /* Time Status Box (Hub) */
+    .time-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .time-card {
+      border: 2px dashed #d8d3c8;
+      background: #fcfbf9;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .status-indicator {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+
+    .dot-green { color: #10b981; }
+    .dot-red { color: #ef4444; }
+
+    .time-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: #9e9a93;
+      border: none;
+      background: transparent;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* Submit Action Button */
+    .btn-report {
+      background-color: var(--accent-black);
+      color: white;
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .btn-report:active {
+      transform: scale(0.99);
+    }
+
+    .sub-hint {
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #8c8984;
+      margin-top: -8px;
+    }
   </style>
 </head>
-<body class="py-4">
+<body>
 
-  <div class="container" style="max-width: 600px;">
-    <div class="card shadow-sm">
-      <div class="card-header bg-primary text-white text-center py-3">
-        <h4 class="mb-0 fw-bold">📡 Laporan Harian BTS</h4>
-        <small>Form Input Kunjungan Lapangan Teknisi</small>
+  <div class="app-container">
+
+    <!-- Floating Top Bar -->
+    <div class="top-header">
+      <div class="header-left">
+        <div class="icon-box">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <div>
+          <div class="header-title">BTS Report Daily</div>
+          <div class="header-sub" id="hdr-date">22/JUL/2026</div>
+        </div>
       </div>
-      <div class="card-body p-4">
-        
-        <form id="btsForm">
-          
-          <!-- Tanggal Kunjungan -->
-          <div class="mb-3">
-            <label for="tanggal" class="form-label">Tanggal Kunjungan</label>
-            <input type="date" class="form-control" id="tanggal" required>
-          </div>
-
-          <!-- Nama Teknisi -->
-          <div class="mb-3">
-            <label for="teknisi" class="form-label">Nama Teknisi</label>
-            <input type="text" class="form-control" id="teknisi" placeholder="Masukkan nama Anda" required>
-          </div>
-
-          <!-- Nama Titik / Site Baku -->
-          <div class="mb-3">
-            <label for="site" class="form-label">Titik Lokasi / Site (Baku)</label>
-            <input list="daftar-site" class="form-control" id="site" placeholder="Ketik atau pilih nama site..." required>
-            <datalist id="daftar-site">
-              <option value="STR-BTS01 - Site Cawang">
-              <option value="STR-BTS02 - Site Tebet">
-              <option value="STR-BTS03 - Site Pancoran">
-              <option value="STR-BTS04 - Site Sunter">
-            </datalist>
-            <div class="form-text">Pilih dari daftar baku yang tersedia.</div>
-          </div>
-
-          <!-- Status Pekerjaan -->
-          <div class="mb-3">
-            <label for="status" class="form-label">Status Pekerjaan</label>
-            <select class="form-select" id="status" required>
-              <option value="">-- Pilih Status --</option>
-              <option value="Normal / Routin PM">Normal / Routine PM</option>
-              <option value="Troubleshooting / Repair">Troubleshooting / Repair</option>
-              <option value="Emergency Response">Emergency Response</option>
-            </select>
-          </div>
-
-          <!-- Catatan / Detail Pekerjaan -->
-          <div class="mb-3">
-            <label for="catatan" class="form-label">Detail Pekerjaan / Catatan</label>
-            <textarea class="form-control" id="catatan" rows="3" placeholder="Tuliskan tindakan yang dilakukan..." required></textarea>
-          </div>
-
-          <!-- Tombol Kirim -->
-          <div class="d-grid gap-2 mt-4">
-            <button type="submit" class="btn btn-primary" id="btnSubmit">Kirim Laporan</button>
-          </div>
-
-        </form>
-
-        <!-- Status Pengiriman Data -->
-        <div id="responseMessage" class="mt-3 text-center fw-bold"></div>
-
-      </div>
+      <div class="badge-draft">Draft</div>
     </div>
+
+    <!-- Date Row Bar -->
+    <div class="date-bar">
+      <div class="current-date-txt" id="txt-hari-tanggal">RABU · 22/07/2026</div>
+      <button class="btn-hari-baru" onclick="resetForm()">
+        <i class="fa-solid fa-rotate-right"></i> Hari Baru
+      </button>
+    </div>
+
+    <!-- SECTION: INFO KENDARAAN -->
+    <div class="section-label">INFO KENDARAAN</div>
+
+    <div class="form-card">
+      
+      <!-- Grid SATMOB & ASMOB -->
+      <div class="grid-2">
+        <div class="grid-col">
+          <label class="input-label">SATMOB</label>
+          <input type="text" class="custom-input" id="satmob" placeholder="Nama driver">
+        </div>
+        <div class="grid-col">
+          <label class="input-label">ASMOB</label>
+          <input type="text" class="custom-input" id="asmob" value="RIDZKY RAMADHAN">
+        </div>
+      </div>
+
+      <!-- Grid PLAT MOBIL & TANGGAL -->
+      <div class="grid-2">
+        <div class="grid-col">
+          <label class="input-label">PLAT MOBIL</label>
+          <input type="text" class="custom-input" id="plat" value="B 9596 UCY">
+        </div>
+        <div class="grid-col">
+          <label class="input-label">TANGGAL</label>
+          <input type="text" class="custom-input" id="tanggal" value="22/07/2026">
+        </div>
+      </div>
+
+      <!-- Single Input RUTE -->
+      <div class="input-box">
+        <label class="input-label">RUTE</label>
+        <input type="text" class="custom-input" id="rute" value="STR-CGKG">
+      </div>
+
+      <!-- Dashed Add Implant -->
+      <div class="dashed-box" onclick="alert('Fitur Tambah Implant dibuka')">
+        <i class="fa-solid fa-plus"></i> Tambah Implant
+      </div>
+
+      <!-- Time Pickup Cards -->
+      <div class="time-grid">
+        <div class="time-card">
+          <div class="status-indicator">
+            <i class="fa-solid fa-circle dot-green"></i> HUB STR
+          </div>
+          <input type="time" class="time-display" id="jam-hub" value="--:--">
+        </div>
+        <div class="time-card">
+          <div class="status-indicator">
+            <i class="fa-solid fa-circle dot-red"></i> TIBA HUB
+          </div>
+          <input type="time" class="time-display" id="jam-tiba" value="--:--">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SECTION: SS (SERAH SIMPAN) -->
+    <div class="section-label">SS (SERAH SIMPAN)</div>
+
+    <div class="dashed-box" style="background: white;" onclick="alert('Fitur Tambah SS dibuka')">
+      <i class="fa-solid fa-plus"></i> Tambah SS
+    </div>
+
+    <!-- Action Button -->
+    <button class="btn-report" onclick="kirimLaporan()">
+      <i class="fa-solid fa-square-check" style="color: #10b981;"></i> Report Keseluruhan
+    </button>
+
+    <div class="sub-hint">Tap untuk preview &rarr; kirim WhatsApp</div>
+
   </div>
 
   <script>
-    // -------------------------------------------------------------
-    // TEMPELKAN URL APPS SCRIPT ANDA DI ANTARA TANDA PETIK DI BAWAH INI:
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4Mq-TGyssl9hu421IznLBE7ifhH_jfR6qzZu75iAaAwjfK0BRLqanB0BAwJ6bILzR/exec";
-    // -------------------------------------------------------------
+    // Ambil Tanggal Otomatis Hari Ini
+    const now = new Date();
+    const days = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
+    
+    const dayName = days[now.getDay()];
+    const dd = String(now.getDate()).padStart(2, '0');
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const yyyy = now.getFullYear();
+    const mmm = months[now.getMonth()];
 
-    document.getElementById('btsForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const btnSubmit = document.getElementById('btnSubmit');
-      const responseMessage = document.getElementById('responseMessage');
-      
-      btnSubmit.disabled = true;
-      btnSubmit.innerText = "Mengirim Data...";
-      responseMessage.innerText = "";
+    // Format tampilan
+    document.getElementById('txt-hari-tanggal').innerText = `${dayName} · ${dd}/${mm}/${yyyy}`;
+    document.getElementById('hdr-date').innerText = `${dd}/${mmm}/${yyyy}`;
+    document.getElementById('tanggal').value = `${dd}/${mm}/${yyyy}`;
 
-      const formData = {
-        tanggal: document.getElementById('tanggal').value,
-        teknisi: document.getElementById('teknisi').value,
-        site: document.getElementById('site').value,
-        status: document.getElementById('status').value,
-        catatan: document.getElementById('catatan').value
-      };
+    function resetForm() {
+      if(confirm("Apakah ingin memulai laporan hari baru?")) {
+        document.getElementById('satmob').value = '';
+        document.getElementById('jam-hub').value = '';
+        document.getElementById('jam-tiba').value = '';
+      }
+    }
 
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(formData)
-      })
-      .then(res => res.json())
-      .then(data => {
-        responseMessage.style.color = "green";
-        responseMessage.innerText = "✅ Laporan Berhasil Terkirim!";
-        document.getElementById('btsForm').reset();
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = "Kirim Laporan";
-      })
-      .catch(error => {
-        responseMessage.style.color = "red";
-        responseMessage.innerText = "❌ Gagal Mengirim Data. Cek Koneksi / URL Apps Script.";
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = "Kirim Laporan";
-      });
-    });
+    function kirimLaporan() {
+      const satmob = document.getElementById('satmob').value || '-';
+      const asmob = document.getElementById('asmob').value;
+      const plat = document.getElementById('plat').value;
+      const rute = document.getElementById('rute').value;
+      const tgl = document.getElementById('tanggal').value;
+      const jamHub = document.getElementById('jam-hub').value || '--:--';
+      const jamTiba = document.getElementById('jam-tiba').value || '--:--';
+
+      const textWA = `*LAPORAN HARIAN BTS Daily*\n` +
+                     `Tanggal: ${tgl}\n\n` +
+                     `*Driver (Satmob):* ${satmob}\n` +
+                     `*Asmob:* ${asmob}\n` +
+                     `*Plat Mobil:* ${plat}\n` +
+                     `*Rute:* ${rute}\n\n` +
+                     `*HUB STR:* ${jamHub}\n` +
+                     `*TIBA HUB:* ${jamTiba}`;
+
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textWA)}`, '_blank');
+    }
   </script>
 
 </body>
