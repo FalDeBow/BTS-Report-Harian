@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BTS Report Daily</title>
-  <!-- Google Fonts & Font Awesome -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     :root {
       --bg-color: #f2efe9;
@@ -17,228 +19,74 @@
       --text-dark: #1a1a1a;
       --accent-black: #181818;
       --pill-bg: #222222;
+      --blue-accent: #1d61e8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-color); color: var(--text-dark); display: flex; justify-content: center; padding: 12px; min-height: 100vh; padding-bottom: 80px; }
+    .app-container { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 16px; }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-dark);
-      display: flex;
-      justify-content: center;
-      padding: 12px;
-      min-height: 100vh;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 440px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* Top Floating Header */
-    .top-header {
-      background-color: var(--pill-bg);
-      color: #fff;
-      border-radius: 30px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
-
+    /* Header */
+    .top-header { background-color: var(--pill-bg); color: #fff; border-radius: 30px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0,0,0,0.12); }
     .header-left { display: flex; align-items: center; gap: 12px; }
-
-    .icon-box {
-      background-color: #1d61e8;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 16px;
-    }
-
+    .icon-box { background-color: var(--blue-accent); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; }
     .header-title { font-size: 15px; font-weight: 700; line-height: 1.2; }
-    .header-sub { font-size: 11px; color: #a0a0a0; font-weight: 500; }
-
-    .badge-status {
-      background-color: #383838;
-      color: #b0b0b0;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
+    .header-sub { font-size: 11px; color: #a0a0a0; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+    .badge-status { background-color: #383838; color: #b0b0b0; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 
     /* Date Bar */
     .date-bar { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; }
     .current-date-txt { font-size: 12px; font-weight: 700; color: #7a7772; letter-spacing: 0.5px; text-transform: uppercase; }
+    .btn-hari-baru { background: #e5e1d8; border: 1px solid #d4cebe; border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 700; color: #4a4843; display: flex; align-items: center; gap: 5px; cursor: pointer; }
 
-    .btn-hari-baru {
-      background: #e5e1d8;
-      border: 1px solid #d4cebe;
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #4a4843;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-    }
-
-    /* Section Label Divider */
-    .section-label {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--text-muted);
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
+    .section-label { font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-top: 4px; }
     .section-label::after { content: ""; flex: 1; height: 1px; background-color: #ddd9d0; }
 
-    /* Form Cards & Grids */
-    .form-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-
+    /* Cards */
+    .form-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02); margin-bottom: 4px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border-color); }
     .grid-col { padding: 10px 14px; }
     .grid-col:first-child { border-right: 1px solid var(--border-color); }
-
     .input-box { padding: 10px 14px; border-bottom: 1px solid var(--border-color); }
-
-    .input-label {
-      font-size: 9px;
-      font-weight: 800;
-      color: var(--text-muted);
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-      display: block;
-    }
-
-    .custom-input {
-      width: 100%;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-dark);
-      background: transparent;
-      padding: 2px 0;
-    }
-
+    
+    .input-label { font-size: 9px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 2px; display: block; }
+    .custom-input { width: 100%; border: none; outline: none; font-size: 14px; font-weight: 700; color: var(--text-dark); background: transparent; padding: 2px 0; }
     .custom-input::placeholder { color: #b5b1aa; font-weight: 500; }
 
-    /* Dynamic Items Container */
-    .dynamic-list { display: flex; flex-direction: column; gap: 8px; padding: 8px 12px 0 12px; }
+    /* Hub Times */
+    .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; }
+    .time-card { border: 2px dashed #d8d3c8; background: #fcfbf9; border-radius: 12px; padding: 10px; text-align: center; }
+    .status-indicator { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 4px; }
+    .dot-green { color: #10b981; } .dot-red { color: #ef4444; }
+    .time-display { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: var(--text-dark); border: none; background: transparent; text-align: center; width: 100%; outline: none; }
 
-    .item-row {
-      background: #fcfbf9;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-remove {
-      color: #ef4444;
-      background: none;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      padding: 4px;
-    }
+    /* TITIK JEMPUT DYNAMIC CARDS */
+    .titik-card { background: #fdfdfc; border: 1px solid #d8d3c8; border-radius: 14px; margin-bottom: 12px; overflow: hidden; position: relative; }
+    .titik-header { background: #f4f1ea; padding: 8px 14px; border-bottom: 1px solid #e2ded7; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; color: #5a5752; }
+    .btn-del-titik { color: #ef4444; background: none; border: none; font-size: 14px; cursor: pointer; }
+    
+    .titik-body { padding: 12px 14px; }
+    .titik-input { width: 100%; font-size: 15px; font-weight: 700; border: none; border-bottom: 2px solid #e2ded7; padding-bottom: 6px; margin-bottom: 12px; outline: none; background: transparent; }
+    .titik-input:focus { border-bottom-color: var(--blue-accent); }
+    
+    .titik-time-row { display: flex; gap: 12px; align-items: center; }
+    .titik-time-box { flex: 1; }
+    .titik-time-box label { font-size: 9px; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .titik-time-box input { width: 100%; border: 1px solid #e2ded7; border-radius: 8px; padding: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; text-align: center; background: #fff; outline: none; }
+    
+    .durasi-badge { background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; font-family: 'JetBrains Mono', monospace; white-space: nowrap; margin-top: 14px; }
 
     /* Dashed Buttons */
-    .dashed-box {
-      border: 2px dashed #d8d3c8;
-      border-radius: 12px;
-      padding: 12px;
-      text-align: center;
-      color: #7a7772;
-      font-size: 13px;
-      font-weight: 700;
-      background: #fcfbf9;
-      cursor: pointer;
-      margin: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-
+    .dashed-box { border: 2px dashed #d8d3c8; border-radius: 12px; padding: 12px; text-align: center; color: #7a7772; font-size: 13px; font-weight: 700; background: #fcfbf9; cursor: pointer; margin: 0 0 12px 0; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .dashed-box:active { background: #f0ebe1; }
 
-    /* Time Status Box (Hub) */
-    .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; }
+    /* SS List */
+    .dynamic-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .item-row { background: #fcfbf9; border: 1px solid var(--border-color); border-radius: 10px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
+    .btn-remove { color: #ef4444; background: none; border: none; font-size: 14px; cursor: pointer; padding: 4px; }
 
-    .time-card { border: 2px dashed #d8d3c8; background: #fcfbf9; border-radius: 12px; padding: 10px; text-align: center; }
-
-    .status-indicator {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      margin-bottom: 4px;
-    }
-
-    .dot-green { color: #10b981; }
-    .dot-red { color: #ef4444; }
-
-    .time-display {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-dark);
-      border: none;
-      background: transparent;
-      text-align: center;
-      width: 100%;
-    }
-
-    /* Action Button */
-    .btn-report {
-      background-color: var(--accent-black);
-      color: white;
-      width: 100%;
-      padding: 16px;
-      border-radius: 14px;
-      border: none;
-      font-size: 15px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
-
-    .btn-report:disabled { opacity: 0.6; cursor: not-allowed; }
-
+    /* Floating Action Button */
+    .btn-report { background-color: var(--accent-black); color: white; width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; margin-top: 8px; }
     .sub-hint { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8c8984; margin-top: -8px; }
   </style>
 </head>
@@ -246,7 +94,6 @@
 
   <div class="app-container">
 
-    <!-- Top Bar -->
     <div class="top-header">
       <div class="header-left">
         <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
@@ -258,124 +105,163 @@
       <div class="badge-status" id="status-badge">Draft</div>
     </div>
 
-    <!-- Date Bar -->
     <div class="date-bar">
       <div class="current-date-txt" id="txt-hari-tanggal">-- · --/--/----</div>
-      <button class="btn-hari-baru" onclick="resetForm()">
-        <i class="fa-solid fa-rotate-right"></i> Hari Baru
-      </button>
+      <button class="btn-hari-baru" onclick="resetForm()"><i class="fa-solid fa-rotate-right"></i> Hari Baru</button>
     </div>
 
-    <!-- INFO KENDARAAN -->
+    <!-- INFO KENDARAAN & HUB -->
     <div class="section-label">INFO KENDARAAN</div>
-
     <div class="form-card">
       <div class="grid-2">
-        <div class="grid-col">
-          <label class="input-label">SATMOB</label>
-          <input type="text" class="custom-input save-draft" id="satmob" placeholder="Nama driver">
-        </div>
-        <div class="grid-col">
-          <label class="input-label">ASMOB</label>
-          <input type="text" class="custom-input save-draft" id="asmob" value="RIDZKY RAMADHAN">
-        </div>
+        <div class="grid-col"><label class="input-label">SATMOB</label><input type="text" class="custom-input save-draft" id="satmob" placeholder="Nama driver"></div>
+        <div class="grid-col"><label class="input-label">ASMOB</label><input type="text" class="custom-input save-draft" id="asmob" value="RIDZKY RAMADHAN"></div>
       </div>
-
       <div class="grid-2">
-        <div class="grid-col">
-          <label class="input-label">PLAT MOBIL</label>
-          <input type="text" class="custom-input save-draft" id="plat" value="B 9596 UCY">
-        </div>
-        <div class="grid-col">
-          <label class="input-label">TANGGAL</label>
-          <input type="text" class="custom-input save-draft" id="tanggal">
-        </div>
+        <div class="grid-col"><label class="input-label">PLAT MOBIL</label><input type="text" class="custom-input save-draft" id="plat" value="B 9596 UCY"></div>
+        <div class="grid-col"><label class="input-label">TANGGAL</label><input type="text" class="custom-input save-draft" id="tanggal"></div>
       </div>
-
-      <div class="input-box">
-        <label class="input-label">RUTE / SITE</label>
-        <input list="list-rute" class="custom-input save-draft" id="rute" placeholder="Pilih rute..." value="STR-CGKG">
-        <datalist id="list-rute">
-          <option value="STR-CGKG">
-          <option value="STR-BTS01 - Cawang">
-          <option value="STR-BTS02 - Tebet">
-          <option value="STR-BTS03 - Pancoran">
-        </datalist>
-      </div>
-
-      <!-- Container Dinamis Implant -->
-      <div id="implant-container" class="dynamic-list"></div>
-
-      <div class="dashed-box" onclick="addImplantRow()">
-        <i class="fa-solid fa-plus"></i> Tambah Implant
-      </div>
-
       <div class="time-grid">
-        <div class="time-card">
-          <div class="status-indicator"><i class="fa-solid fa-circle dot-green"></i> HUB STR</div>
-          <input type="time" class="time-display save-draft" id="jam-hub">
-        </div>
-        <div class="time-card">
-          <div class="status-indicator"><i class="fa-solid fa-circle dot-red"></i> TIBA HUB</div>
-          <input type="time" class="time-display save-draft" id="jam-tiba">
-        </div>
+        <div class="time-card"><div class="status-indicator"><i class="fa-solid fa-circle dot-green"></i> HUB STR</div><input type="time" class="time-display save-draft" id="jam-hub"></div>
+        <div class="time-card"><div class="status-indicator"><i class="fa-solid fa-circle dot-red"></i> TIBA HUB</div><input type="time" class="time-display save-draft" id="jam-tiba"></div>
       </div>
+    </div>
+
+    <!-- TITIK JEMPUT (DINAMIS & PERHITUNGAN WAKTU) -->
+    <div class="section-label">DAFTAR TITIK KUNJUNGAN</div>
+    
+    <div id="titik-container"></div>
+    
+    <div class="dashed-box" onclick="addTitikCard()">
+      <i class="fa-solid fa-location-dot"></i> Tambah Titik Kunjungan
     </div>
 
     <!-- SS (SERAH SIMPAN) -->
     <div class="section-label">SS (SERAH SIMPAN)</div>
-
     <div id="ss-container" class="dynamic-list"></div>
-
     <div class="dashed-box" style="background: white;" onclick="addSSRow()">
       <i class="fa-solid fa-plus"></i> Tambah SS
     </div>
 
-    <!-- Action Button -->
     <button class="btn-report" id="btn-submit" onclick="prosesLaporan()">
       <i class="fa-solid fa-square-check" style="color: #10b981;"></i> Report Keseluruhan
     </button>
-
-    <div class="sub-hint">Tap untuk kirim GSheet & WhatsApp</div>
+    <div class="sub-hint">Generate Format & Hitung Durasi</div>
 
   </div>
 
   <script>
-    // -------------------------------------------------------------
-    // TEMPELKAN URL APPS SCRIPT ANDA DI SINI
+    // Konfigurasi GSheet URL
     const GSHEET_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_ANDA_DI_SINI";
-    // -------------------------------------------------------------
 
-    // Init Tanggal Otomatis Hari Ini
+    // Engine Tanggal
     const now = new Date();
     const days = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
     const months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
-    
     const dayName = days[now.getDay()];
     const dd = String(now.getDate()).padStart(2, '0');
     const mm = String(now.getMonth() + 1).padStart(2, '0');
     const yyyy = now.getFullYear();
     const mmm = months[now.getMonth()];
-
+    
     document.getElementById('txt-hari-tanggal').innerText = `${dayName} · ${dd}/${mm}/${yyyy}`;
     document.getElementById('hdr-date').innerText = `${dd}/${mmm}/${yyyy}`;
-    
-    const elTanggal = document.getElementById('tanggal');
-    if (!elTanggal.value) elTanggal.value = `${dd}/${mm}/${yyyy}`;
+    if (!document.getElementById('tanggal').value) document.getElementById('tanggal').value = `${dd}/${mm}/${yyyy}`;
 
-    // --- Dynamic Rows (Implant & SS) ---
-    function addImplantRow(val = '') {
-      const container = document.getElementById('implant-container');
-      const div = document.createElement('div');
-      div.className = 'item-row';
-      div.innerHTML = `
-        <input type="text" class="custom-input implant-item" placeholder="Detail Implant..." value="${val}">
-        <button type="button" class="btn-remove" onclick="this.parentElement.remove(); saveDraft();"><i class="fa-solid fa-trash"></i></button>
-      `;
-      container.appendChild(div);
+    let titikCount = 0;
+
+    // FUNGSI LOGIKA PERHITUNGAN WAKTU (Jam Tiba - Jam Selesai)
+    function hitungDurasi(inputTiba, inputSelesai, badgeOutput) {
+      if(!inputTiba.value || !inputSelesai.value) {
+        badgeOutput.innerText = "- mnt";
+        return;
+      }
+      const t1 = inputTiba.value.split(':');
+      const t2 = inputSelesai.value.split(':');
+      
+      const d1 = new Date(0, 0, 0, t1[0], t1[1], 0);
+      let d2 = new Date(0, 0, 0, t2[0], t2[1], 0);
+      
+      if(d2 < d1) d2.setDate(d2.getDate() + 1); // Jika lewat tengah malam
+      
+      const diffMs = d2 - d1;
+      const diffMins = Math.floor(diffMs / 60000);
+      
+      if(diffMins >= 60) {
+        const h = Math.floor(diffMins / 60);
+        const m = diffMins % 60;
+        badgeOutput.innerText = `${h}j ${m}m`;
+      } else {
+        badgeOutput.innerText = `${diffMins} mnt`;
+      }
       saveDraft();
     }
 
+    // TAMBAH KARTU TITIK KUNJUNGAN
+    function addTitikCard(lokasi = '', tiba = '', selesai = '') {
+      titikCount++;
+      const container = document.getElementById('titik-container');
+      const idStr = `titik-${Date.now()}`;
+      
+      const div = document.createElement('div');
+      div.className = 'titik-card';
+      div.id = idStr;
+      
+      div.innerHTML = `
+        <div class="titik-header">
+          <span>TITIK KUNJUNGAN #${titikCount}</span>
+          <button class="btn-del-titik" onclick="hapusTitik('${idStr}')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="titik-body">
+          <input type="text" class="titik-input nama-titik" placeholder="Ketik Nama Lokasi / Site..." value="${lokasi}">
+          <div class="titik-time-row">
+            <div class="titik-time-box">
+              <label>JAM TIBA</label>
+              <input type="time" class="jam-tiba-titik" value="${tiba}">
+            </div>
+            <div class="titik-time-box">
+              <label>JAM SELESAI</label>
+              <input type="time" class="jam-selesai-titik" value="${selesai}">
+            </div>
+            <div class="durasi-badge badge-durasi">- mnt</div>
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+
+      // Listener untuk otomatis hitung durasi saat jam diubah
+      const inTiba = div.querySelector('.jam-tiba-titik');
+      const inSelesai = div.querySelector('.jam-selesai-titik');
+      const badge = div.querySelector('.badge-durasi');
+      const inNama = div.querySelector('.nama-titik');
+
+      inTiba.addEventListener('input', () => hitungDurasi(inTiba, inSelesai, badge));
+      inSelesai.addEventListener('input', () => hitungDurasi(inTiba, inSelesai, badge));
+      inNama.addEventListener('input', saveDraft);
+
+      // Hitung awal jika diload dari draft
+      if(tiba && selesai) hitungDurasi(inTiba, inSelesai, badge);
+      
+      updateNomorTitik();
+      saveDraft();
+    }
+
+    function hapusTitik(id) {
+      document.getElementById(id).remove();
+      updateNomorTitik();
+      saveDraft();
+    }
+
+    function updateNomorTitik() {
+      const headers = document.querySelectorAll('.titik-header span');
+      titikCount = 0;
+      headers.forEach(h => {
+        titikCount++;
+        h.innerText = `TITIK KUNJUNGAN #${titikCount}`;
+      });
+    }
+
+    // SS Items
     function addSSRow(val = '') {
       const container = document.getElementById('ss-container');
       const div = document.createElement('div');
@@ -385,20 +271,29 @@
         <button type="button" class="btn-remove" onclick="this.parentElement.remove(); saveDraft();"><i class="fa-solid fa-trash"></i></button>
       `;
       container.appendChild(div);
+      div.querySelector('input').addEventListener('input', saveDraft);
       saveDraft();
     }
 
-    // --- Auto Save Draft (localStorage) ---
+    // LOCAL STORAGE DRAFT
     function saveDraft() {
+      const titikArr = [];
+      document.querySelectorAll('.titik-card').forEach(card => {
+        titikArr.push({
+          lokasi: card.querySelector('.nama-titik').value,
+          tiba: card.querySelector('.jam-tiba-titik').value,
+          selesai: card.querySelector('.jam-selesai-titik').value
+        });
+      });
+
       const draftData = {
         satmob: document.getElementById('satmob').value,
         asmob: document.getElementById('asmob').value,
         plat: document.getElementById('plat').value,
         tanggal: document.getElementById('tanggal').value,
-        rute: document.getElementById('rute').value,
         jamHub: document.getElementById('jam-hub').value,
         jamTiba: document.getElementById('jam-tiba').value,
-        implants: Array.from(document.querySelectorAll('.implant-item')).map(i => i.value),
+        titikList: titikArr,
         ssItems: Array.from(document.querySelectorAll('.ss-item')).map(i => i.value)
       };
       localStorage.setItem('bts_report_draft', JSON.stringify(draftData));
@@ -407,114 +302,87 @@
     function loadDraft() {
       const saved = localStorage.getItem('bts_report_draft');
       if (!saved) return;
-      const data = JSON.parse(saved);
-      
-      if (data.satmob !== undefined) document.getElementById('satmob').value = data.satmob;
-      if (data.asmob !== undefined) document.getElementById('asmob').value = data.asmob;
-      if (data.plat !== undefined) document.getElementById('plat').value = data.plat;
-      if (data.tanggal !== undefined) document.getElementById('tanggal').value = data.tanggal;
-      if (data.rute !== undefined) document.getElementById('rute').value = data.rute;
-      if (data.jamHub !== undefined) document.getElementById('jam-hub').value = data.jamHub;
-      if (data.jamTiba !== undefined) document.getElementById('jam-tiba').value = data.jamTiba;
+      try {
+        const data = JSON.parse(saved);
+        if(data.satmob !== undefined) document.getElementById('satmob').value = data.satmob;
+        if(data.asmob !== undefined) document.getElementById('asmob').value = data.asmob;
+        if(data.plat !== undefined) document.getElementById('plat').value = data.plat;
+        if(data.tanggal !== undefined) document.getElementById('tanggal').value = data.tanggal;
+        if(data.jamHub !== undefined) document.getElementById('jam-hub').value = data.jamHub;
+        if(data.jamTiba !== undefined) document.getElementById('jam-tiba').value = data.jamTiba;
 
-      if (data.implants && data.implants.length) {
-        data.implants.forEach(val => addImplantRow(val));
-      }
-      if (data.ssItems && data.ssItems.length) {
-        data.ssItems.forEach(val => addSSRow(val));
-      }
+        if (data.titikList && data.titikList.length > 0) {
+          data.titikList.forEach(t => addTitikCard(t.lokasi, t.tiba, t.selesai));
+        }
+        if (data.ssItems && data.ssItems.length > 0) {
+          data.ssItems.forEach(val => addSSRow(val));
+        }
+      } catch(e) {}
     }
 
-    // Event Listener untuk Auto-Save
-    document.querySelectorAll('.save-draft').forEach(el => {
-      el.addEventListener('input', saveDraft);
-    });
+    document.querySelectorAll('.save-draft').forEach(el => el.addEventListener('input', saveDraft));
 
     function resetForm() {
-      if (confirm("Reset seluruh data laporan dan mulai hari baru?")) {
+      if (confirm("Reset data dan mulai hari baru?")) {
         localStorage.removeItem('bts_report_draft');
-        document.getElementById('satmob').value = '';
-        document.getElementById('jam-hub').value = '';
-        document.getElementById('jam-tiba').value = '';
-        document.getElementById('implant-container').innerHTML = '';
-        document.getElementById('ss-container').innerHTML = '';
-        document.getElementById('status-badge').innerText = 'Draft';
+        location.reload();
       }
     }
 
-    // --- Submit Handler (GSheet + WA) ---
+    // SUBMIT REPORT
     function prosesLaporan() {
-      const btn = document.getElementById('btn-submit');
-      const badge = document.getElementById('status-badge');
-
+      const tgl = document.getElementById('tanggal').value || '-';
       const satmob = document.getElementById('satmob').value || '-';
       const asmob = document.getElementById('asmob').value || '-';
       const plat = document.getElementById('plat').value || '-';
-      const rute = document.getElementById('rute').value || '-';
-      const tgl = document.getElementById('tanggal').value || '-';
       const jamHub = document.getElementById('jam-hub').value || '--:--';
       const jamTiba = document.getElementById('jam-tiba').value || '--:--';
 
-      const implants = Array.from(document.querySelectorAll('.implant-item'))
-                           .map(i => i.value.trim()).filter(i => i !== '');
-      const ssItems = Array.from(document.querySelectorAll('.ss-item'))
-                           .map(i => i.value.trim()).filter(i => i !== '');
+      let textWA = `*LAPORAN HARIAN BTS*\nTanggal: ${tgl}\n\n`;
+      textWA += `*Satmob:* ${satmob}\n*Asmob:* ${asmob}\n*Plat:* ${plat}\n\n`;
+      textWA += `*HUB STR:* ${jamHub}\n`;
 
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
+      let payloadTitikStr = "";
+      
+      const titikCards = document.querySelectorAll('.titik-card');
+      if(titikCards.length > 0) {
+        textWA += `\n*RUTE / TITIK KUNJUNGAN:*\n`;
+        titikCards.forEach((card, index) => {
+          const loc = card.querySelector('.nama-titik').value || '(Tanpa Nama)';
+          const tb = card.querySelector('.jam-tiba-titik').value || '--:--';
+          const sl = card.querySelector('.jam-selesai-titik').value || '--:--';
+          const dr = card.querySelector('.badge-durasi').innerText;
+          
+          textWA += `${index+1}. *${loc}*\n   Tiba: ${tb} | Selesai: ${sl} (Durasi: ${dr})\n`;
+          payloadTitikStr += `${loc} (${tb}-${sl}=${dr}) | `;
+        });
+      }
 
+      textWA += `\n*TIBA HUB:* ${jamTiba}\n\n`;
+
+      const ssItems = Array.from(document.querySelectorAll('.ss-item')).map(i => i.value.trim()).filter(i => i !== '');
+      if (ssItems.length > 0) {
+        textWA += `*SS (Serah Simpan):*\n` + ssItems.map(i => `• ${i}`).join('\n');
+      }
+
+      // Payload JSON untuk Apps Script
       const payload = {
-        tanggal: tgl,
-        satmob: satmob,
-        asmob: asmob,
-        plat: plat,
-        rute: rute,
-        jamHub: jamHub,
-        jamTiba: jamTiba,
-        implant: implants.join(' | '),
+        tanggal: tgl, satmob: satmob, asmob: asmob, plat: plat,
+        jamHub: jamHub, jamTiba: jamTiba, 
+        titik: payloadTitikStr, 
         ss: ssItems.join(' | ')
       };
 
-      // 1. Kirim ke Google Apps Script (Spreadsheet)
-      fetch(GSHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).then(() => {
-        badge.innerText = 'Terkirim';
-        badge.style.backgroundColor = '#10b981';
-        badge.style.color = '#fff';
-      }).catch(err => {
-        console.error("GSheet Error:", err);
-      }).finally(() => {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-square-check" style="color: #10b981;"></i> Report Keseluruhan`;
+      if (GSHEET_URL !== "https://script.google.com/macros/s/AKfycbyvGOirxyFI-txbBun0U4cLw4-ziaHUfukOhbREzYtoEWCJyB8iLURDat4Q61U06l0p/exec") {
+        fetch(GSHEET_URL, {
+          method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
 
-        // 2. Susun & Kirim Pesan ke WhatsApp
-        let textWA = `*LAPORAN HARIAN BTS Daily*\n` +
-                     `Tanggal: ${tgl}\n\n` +
-                     `*Driver (Satmob):* ${satmob}\n` +
-                     `*Asmob:* ${asmob}\n` +
-                     `*Plat Mobil:* ${plat}\n` +
-                     `*Rute:* ${rute}\n\n`;
-
-        if (implants.length > 0) {
-          textWA += `*Implant:*\n` + implants.map(i => `• ${i}`).join('\n') + `\n\n`;
-        }
-
-        textWA += `*HUB STR:* ${jamHub}\n` +
-                  `*TIBA HUB:* ${jamTiba}\n\n`;
-
-        if (ssItems.length > 0) {
-          textWA += `*SS (Serah Simpan):*\n` + ssItems.map(i => `• ${i}`).join('\n');
-        }
-
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textWA)}`, '_blank');
-      });
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textWA)}`, '_blank');
     }
 
-    // Load draft saat halaman dibuka
     window.onload = loadDraft;
   </script>
 </body>
