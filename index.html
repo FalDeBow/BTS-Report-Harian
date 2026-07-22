@@ -115,6 +115,12 @@ body{
   content:'';flex:1;height:1px;background:var(--border)
 }
 
+/* ── PROGRESS BAR UX ── */
+.progress-wrap{ margin: 4px 0 14px 0; }
+.progress-text{ font-size: 10px; font-weight: 700; color: var(--ink3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;}
+.progress-track{ background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; height: 10px; overflow: hidden; }
+.progress-bar{ background: var(--cgkg); height: 100%; width: 0%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
 /* ── CARD ── */
 .card{
   background:var(--surface);
@@ -202,26 +208,11 @@ body{
 }
 .cgkg-title-inp:focus{border-bottom-style:solid;border-bottom-color:#fff}
 .cgkg-title-inp::placeholder{color:rgba(255,255,255,.5)}
-.cgkg-sub-inp{
-  display:block;width:100%;font-family:var(--font);font-size:10px;
-  color:rgba(255,255,255,.6);background:transparent;border:none;
-  border-bottom:1px dashed rgba(255,255,255,.2);outline:none;
-  padding:2px 0 1px;margin-top:2px
-}
-.cgkg-sub-inp:focus{border-bottom-style:solid;border-bottom-color:rgba(255,255,255,.6)}
-.cgkg-sub-inp::placeholder{color:rgba(255,255,255,.35)}
 .cgkg-badge{
   width:28px;height:28px;border-radius:8px;
   background:rgba(255,255,255,.15);
   display:flex;align-items:center;justify-content:center;
   font-size:14px
-}
-.cgkg-title{font-size:14px;font-weight:700;color:#fff}
-.cgkg-sub{font-size:10px;color:rgba(255,255,255,.6);margin-top:1px}
-.cgkg-tag{
-  font-size:9px;font-weight:700;letter-spacing:.5px;
-  background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);
-  border-radius:20px;padding:3px 10px
 }
 .cgkg-del{
   background:rgba(255,255,255,.15);border:none;border-radius:8px;
@@ -258,8 +249,6 @@ body{
 .cjbtn.on .cjbtn-lbl{opacity:1}
 .cjbtn-val{font-size:20px;font-weight:700;color:var(--cgkg-mid);font-family:var(--mono)}
 .cjbtn.on .cjbtn-val{color:var(--cgkg)}
-@keyframes flash-green{0%{background:#bbf7d0}100%{background:rgba(255,255,255,.85)}}
-.cjbtn.flash{animation:flash-green .5s ease}
 .cjedit{
   display:none;font-family:var(--font);font-size:10px;font-weight:700;
   color:var(--cgkg);background:var(--cgkg-mid);
@@ -267,13 +256,18 @@ body{
 }
 .cjedit:active{background:var(--cgkg);color:#fff}
 
-/* ── STOP BIASA ── */
+/* ── STOP BIASA (UX COLLAPSIBLE) ── */
 .stop{
   background:var(--surface);border-radius:var(--r);
   border:1px solid var(--border);margin-bottom:8px;overflow:hidden;
-  box-shadow:0 1px 4px rgba(0,0,0,.04)
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+  transition: all 0.3s;
 }
 .stop-hd{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border)}
+.stop-btn-collapse { background:none; border:none; color:var(--ink3); font-size:14px; cursor:pointer; padding:4px; transition: transform 0.3s;}
+.stop.collapsed .stop-btn-collapse { transform: rotate(-90deg); }
+.stop-body { transition: max-height 0.3s ease; overflow: hidden; max-height: 500px; }
+.stop.collapsed .stop-body { max-height: 0; }
 .stop-num{
   min-width:26px;height:26px;
   background:var(--ink);border-radius:8px;
@@ -373,7 +367,7 @@ body{
 }
 .noted-inp::placeholder{color:rgba(255,255,255,.2)}
 
-/* ── CGKG SUMMARY (in rekap) ── */
+/* ── CGKG SUMMARY ── */
 .cgkg-sum{
   display:flex;align-items:center;gap:10px;
   padding:10px 16px;border-top:1px solid rgba(255,255,255,.08)
@@ -515,16 +509,25 @@ body{
 .preview-copy{
   flex:1;padding:13px;background:var(--surface2);
   border:1px solid var(--border);border-radius:12px;
-  font-family:var(--font);font-size:13px;font-weight:700;
+  font-family:var(--font);font-size:12px;font-weight:700;
   color:var(--ink2);cursor:pointer
 }
 .preview-wa{
-  flex:2;padding:13px;background:var(--ink);
+  flex:1;padding:13px;background:var(--ink);
   border:none;border-radius:12px;
-  font-family:var(--font);font-size:13px;font-weight:700;
-  color:#fff;cursor:pointer
+  font-family:var(--font);font-size:12px;font-weight:700;
+  color:#fff;cursor:pointer;
+  white-space: nowrap;
 }
 .preview-wa:active{opacity:.85}
+.preview-gsheet{
+  flex:1.5;padding:13px;background:var(--cgkg);
+  border:none;border-radius:12px;
+  font-family:var(--font);font-size:12px;font-weight:700;
+  color:#fff;cursor:pointer;
+  white-space: nowrap;
+}
+.preview-gsheet:active{opacity:.85}
 </style>
 </head>
 <body>
@@ -589,6 +592,15 @@ body{
 
   <!-- TITIK KIRIM -->
   <div class="sec-label">Titik Kirim</div>
+  
+  <!-- PROGRESS BAR UX -->
+  <div class="progress-wrap">
+    <div class="progress-text" id="progress-text">Belum ada Titik Kirim</div>
+    <div class="progress-track">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
+
   <div id="stops"></div>
   <button class="btn-add" onclick="addStop()">＋ Tambah Titik Kirim</button>
 
@@ -615,7 +627,7 @@ body{
     <button class="btn-cgkg" id="btn-report-ss" onclick="reportSSPicker()">📋 Report SS</button>
     <button class="btn-wa" onclick="showReport('all')">✅ Report Keseluruhan</button>
   </div>
-  <div class="bar-hint">Tap untuk preview → kirim WhatsApp</div>
+  <div class="bar-hint">Tap untuk preview → kirim WhatsApp & GSheet</div>
 </div>
 
 <!-- MODAL EDIT JAM -->
@@ -654,7 +666,8 @@ body{
     </div>
     <div class="preview-btns">
       <button class="preview-copy" onclick="copyReport()">📋 Salin</button>
-      <button class="preview-wa" onclick="sendWa()">📲 Kirim WhatsApp</button>
+      <button class="preview-wa" onclick="sendWa()">📲 WA Saja</button>
+      <button class="preview-gsheet" id="btn-gsheet" onclick="sendToGSheet()">📊 GSheet & WA</button>
     </div>
   </div>
 </div>
@@ -662,6 +675,11 @@ body{
 <div class="toast" id="toast"></div>
 
 <script>
+// ==============================================
+// GANTI STRING INI DENGAN URL WEB APP ANDA
+const GSHEET_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI";
+// ==============================================
+
 const PKEY='bts_p3', DKEY='bts_d3';
 let stopIdx=0, implantIdx=0, ssIdx=0, modalCtx=null, currentReport='';
 
@@ -692,10 +710,9 @@ function updateDateHeader(){
   $('subbar-day').textContent=`${days[d.getDay()]} · ${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
 }
 
-// ── REKAP ──
+// ── REKAP & PROGRESS UX ──
 function stopIds(){ return [...document.querySelectorAll('.stop')].map(el=>+el.id.split('-')[1]); }
 function rekal(){
-  // Total keseluruhan = hanya titik kirim (TANPA SS)
   let p=0, m=0, b=0;
   stopIds().forEach(i=>{
     p+=+($(`sp-${i}`)?.value||0);
@@ -707,6 +724,24 @@ function rekal(){
   $('r-bp').textContent=b;
   renderSSSum();
   updateReportButtons();
+  updateProgressUI();
+}
+
+function updateProgressUI() {
+  const ids = stopIds();
+  if (ids.length === 0) {
+    $('progress-text').textContent = 'Belum ada Titik Kirim';
+    $('progress-bar').style.width = '0%';
+    return;
+  }
+  let done = 0;
+  ids.forEach(i => {
+    // Dianggap selesai jika jam 'Brkt' (Berangkat dari lokasi) sudah terisi
+    if ($(`tbtn-Brkt-${i}`)?.dataset?.t) done++;
+  });
+  const pct = Math.round((done / ids.length) * 100);
+  $('progress-text').textContent = `${done} dari ${ids.length} Titik Selesai (${pct}%)`;
+  $('progress-bar').style.width = `${pct}%`;
 }
 
 // ── TOMBOL REPORT: sembunyikan "Report SS" jika belum ada SS ──
@@ -736,16 +771,24 @@ function renderSSSum(){
   }).join('');
 }
 
-// ── ADD STOP ──
+// ── TOGGLE COLLAPSIBLE UX ──
+function toggleCollapse(i) {
+  const el = $(`stop-${i}`);
+  if(el) el.classList.toggle('collapsed');
+}
+
+// ── ADD STOP (WITH COLLAPSIBLE BODY) ──
 function addStop(d={}){
   stopIdx++; const i=stopIdx;
   const el=document.createElement('div');
   el.className='stop'; el.id=`stop-${i}`;
+  
   el.innerHTML=`
     <div class="stop-hd">
+      <button class="stop-btn-collapse" onclick="toggleCollapse(${i})" title="Lipat/Buka">▼</button>
       <div class="stop-num">${i}</div>
       <input class="stop-name" id="sn-${i}" placeholder="Nama titik kirim..." value="${esc(d.nama)}">
-      <select class="stop-trip" id="st-${i}" title="Tandai Trip ke berapa (untuk seller dengan pickup lebih dari 1x)">
+      <select class="stop-trip" id="st-${i}" title="Tandai Trip ke berapa">
         <option value="">Trip</option>
         <option value="Trip 1"${d.trip==='Trip 1'?' selected':''}>Trip 1</option>
         <option value="Trip 2"${d.trip==='Trip 2'?' selected':''}>Trip 2</option>
@@ -755,28 +798,32 @@ function addStop(d={}){
       </select>
       <button class="stop-del" onclick="delStop(${i})">×</button>
     </div>
-    <div class="pkt-row">
-      <div class="pkt"><div class="pkt-lbl">Paket</div><input class="pkt-inp" id="sp-${i}" type="number" inputmode="numeric" placeholder="0" value="${d.paket||''}"></div>
-      <div class="pkt"><div class="pkt-lbl">MB</div><input class="pkt-inp" id="sm-${i}" type="number" inputmode="numeric" placeholder="0" value="${d.mb||''}"></div>
-      <div class="pkt"><div class="pkt-lbl">BP</div><input class="pkt-inp" id="sb-${i}" type="number" inputmode="numeric" placeholder="0" value="${d.bp||''}"></div>
-    </div>
-    <div class="meta-row">
-      <span class="meta-lbl">ETA</span>
-      <input class="meta-eta" id="se-${i}" type="text" inputmode="numeric" maxlength="5" placeholder="--:--" value="${d.eta||''}" oninput="maskTime(this)">
-      <span class="meta-sep">|</span>
-      <input class="meta-ket" id="sk-${i}" placeholder="keterangan..." value="${esc(d.ket)}">
-      <div id="dev-${i}" style="display:none"></div>
-    </div>
-    <div class="times">
-      ${['Tiba','Brkt'].map(k=>`
-      <div class="tfield">
-        <button class="tbtn" id="tbtn-${k}-${i}" onclick="stampTime('${k}',${i})">
-          <div class="tbtn-lbl">${k}</div>
-          <div class="tbtn-val" id="tval-${k}-${i}">--:--</div>
-        </button>
-        <button class="tedit" id="tedit-${k}-${i}" onclick="openModal('stop','${k}',${i})">✏️</button>
-      </div>`).join('')}
+    
+    <div class="stop-body">
+      <div class="pkt-row">
+        <div class="pkt"><div class="pkt-lbl">Paket</div><input class="pkt-inp" id="sp-${i}" type="number" inputmode="numeric" placeholder="0" value="${d.paket||''}"></div>
+        <div class="pkt"><div class="pkt-lbl">MB</div><input class="pkt-inp" id="sm-${i}" type="number" inputmode="numeric" placeholder="0" value="${d.mb||''}"></div>
+        <div class="pkt"><div class="pkt-lbl">BP</div><input class="pkt-inp" id="sb-${i}" type="number" inputmode="numeric" placeholder="0" value="${d.bp||''}"></div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-lbl">ETA</span>
+        <input class="meta-eta" id="se-${i}" type="text" inputmode="numeric" maxlength="5" placeholder="--:--" value="${d.eta||''}" oninput="maskTime(this)">
+        <span class="meta-sep">|</span>
+        <input class="meta-ket" id="sk-${i}" placeholder="keterangan..." value="${esc(d.ket)}">
+        <div id="dev-${i}" style="display:none"></div>
+      </div>
+      <div class="times">
+        ${['Tiba','Brkt'].map(k=>`
+        <div class="tfield">
+          <button class="tbtn" id="tbtn-${k}-${i}" onclick="stampTime('${k}',${i})">
+            <div class="tbtn-lbl">${k}</div>
+            <div class="tbtn-val" id="tval-${k}-${i}">--:--</div>
+          </button>
+          <button class="tedit" id="tedit-${k}-${i}" onclick="openModal('stop','${k}',${i})">✏️</button>
+        </div>`).join('')}
+      </div>
     </div>`;
+  
   $('stops').appendChild(el);
   $(`se-${i}`).addEventListener('input',()=>{ calcDev(i); autoSave(); });
   $(`sk-${i}`).addEventListener('input', autoSave);
@@ -801,7 +848,7 @@ function addImplant(nama=''){
 function delImplant(i){ $(`implant-${i}`)?.remove(); autoSave(); }
 function implantNames(){ return implantIds().map(i=>$(`fi-implant-${i}`)?.value||'').filter(v=>v.trim()!==''); }
 
-// ── SS LIST (bisa lebih dari 1) ──
+// ── SS LIST ──
 function ssIds(){ return [...document.querySelectorAll('.ss-card')].map(el=>+el.id.split('-')[1]); }
 function ssName(i){ return ($(`ss-name-${i}`)?.value||'').trim() || 'SS'; }
 function addSS(d={}){
@@ -871,6 +918,12 @@ function stampTime(k,i){
   $(`tbtn-${k}-${i}`).classList.add('flash');
   setTimeout(()=>$(`tbtn-${k}-${i}`)?.classList.remove('flash'),500);
   calcDev(i); autoSave();
+  rekal(); // Memicu Progress Bar Update
+  
+  // UX Auto-Collapse jika jam Berangkat diklik
+  if(k === 'Brkt') {
+      setTimeout(() => { $(`stop-${i}`)?.classList.add('collapsed'); }, 600);
+  }
 }
 function stampJam(key){
   if($(`jbtn-${key}`)?.dataset?.t) return;
@@ -977,12 +1030,14 @@ function saveModal(){
   else if(modalCtx?.type==='ss') _applySSJam(modalCtx.key,modalCtx.i,val);
   else if(modalCtx?.type==='stop'){ _setTime(modalCtx.k,modalCtx.i,val); calcDev(modalCtx.i); }
   autoSave(); closeModal();
+  rekal();
 }
 function resetModal(){
   if(modalCtx?.type==='jam') _clearJam(modalCtx.key);
   else if(modalCtx?.type==='ss') _clearSSJam(modalCtx.key,modalCtx.i);
   else if(modalCtx?.type==='stop'){ _clearTime(modalCtx.k,modalCtx.i); calcDev(modalCtx.i); }
   autoSave(); closeModal();
+  rekal();
 }
 
 // ── HARI BARU ──
@@ -1075,7 +1130,7 @@ function buildAllReport(){
   txt+='*Rute : '+rute+'*\n\n';
   txt+='*Berangkat : '+brkt+'*\n\n';
 
-  // SS (bisa lebih dari satu) — info saja, tidak masuk total
+  // SS (bisa lebih dari satu)
   ssIds().forEach(i=>{
     const p=+($(`ss-paket-${i}`)?.value||0);
     const m=+($(`ss-mb-${i}`)?.value||0);
@@ -1115,7 +1170,7 @@ function buildAllReport(){
     txt+='Berangkat : '+sbrkt+'\n\n';
   });
 
-  // Total hanya titik kirim (TANPA CGKG)
+  // Total hanya titik kirim
   let tp=0, tm=0, tb=0;
   stopIds().forEach(i=>{
     tp+=+($('sp-'+i)?.value||0);
@@ -1130,7 +1185,7 @@ function buildAllReport(){
   return txt;
 }
 
-// ── PREVIEW & SEND ──
+// ── PREVIEW & WA Saja ──
 let _previewMode='all', _previewSSIdx=null;
 function showReport(mode,ssIdx){
   _previewMode=mode; _previewSSIdx=ssIdx;
@@ -1153,6 +1208,57 @@ function fallbackCopy(txt){
 function sendWa(){
   window.open('whatsapp://send?text='+encodeURIComponent(currentReport),'_blank');
   closePreview();
+}
+
+// ── SEND TO GSHEET & WA ──
+function sendToGSheet() {
+  if (GSHEET_URL === "PASTE_URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI") {
+    toast('⚠️ URL Google Script belum diisi di kode!');
+    return;
+  }
+
+  const btn = $('btn-gsheet');
+  btn.textContent = '⏳ Mengirim...';
+  btn.disabled = true;
+
+  const totalPaket = $('r-paket').textContent.replace(/\D/g, '');
+  const totalMb = $('r-mb').textContent;
+  const totalBp = $('r-bp').textContent;
+
+  const payload = {
+    tanggal: $('f-tgl').value,
+    satmob: $('f-satmob').value || '-',
+    asmob: $('f-asmob').value || '-',
+    plat: $('f-plat').value || '-',
+    rute: $('f-rute').value || '-',
+    hub_str: $('jbtn-brkt')?.dataset?.t || '-',
+    tiba_hub: $('jbtn-hub')?.dataset?.t || '-',
+    total_paket: totalPaket,
+    total_mb: totalMb,
+    total_bp: totalBp,
+    laporan_teks: currentReport 
+  };
+
+  fetch(GSHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    toast('✅ Data masuk ke GSheet!');
+    btn.textContent = '📊 GSheet & WA';
+    btn.disabled = false;
+    
+    // Buka otomatis WA
+    setTimeout(sendWa, 800);
+  })
+  .catch(err => {
+    console.error(err);
+    toast('❌ Gagal kirim ke GSheet.');
+    btn.textContent = '📊 GSheet & WA';
+    btn.disabled = false;
+  });
 }
 
 // ── SAVE / LOAD ──
@@ -1206,7 +1312,7 @@ function load(){
     if(d.brkt) _applyJam('brkt',d.brkt);
     if(d.hub)  _applyJam('hub',d.hub);
 
-    // ── SS list (migrasi dari format lama single-CGKG bila perlu) ──
+    // ── SS list ──
     $('ss-list').innerHTML=''; ssIdx=0;
     let ssListData;
     if(Array.isArray(p.ss)) ssListData=p.ss;
