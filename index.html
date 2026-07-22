@@ -23,7 +23,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-color); color: var(--text-dark); display: flex; justify-content: center; padding: 12px; min-height: 100vh; padding-bottom: 80px; }
+    body { background-color: var(--bg-color); color: var(--text-dark); display: flex; justify-content: center; padding: 12px; min-height: 100vh; padding-bottom: 40px; }
     .app-container { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 16px; }
 
     /* Header */
@@ -60,24 +60,31 @@
     .dot-green { color: #10b981; } .dot-red { color: #ef4444; }
     .time-display { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: var(--text-dark); border: none; background: transparent; text-align: center; width: 100%; outline: none; }
 
-    /* TITIK JEMPUT DYNAMIC CARDS */
-    .titik-card { background: #fdfdfc; border: 1px solid #d8d3c8; border-radius: 14px; margin-bottom: 12px; overflow: hidden; position: relative; }
-    .titik-header { background: #f4f1ea; padding: 8px 14px; border-bottom: 1px solid #e2ded7; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; color: #5a5752; }
+    /* TITIK IMPLANT & MANIFEST CARDS */
+    .titik-card { background: #ffffff; border: 1px solid #d8d3c8; border-radius: 14px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .titik-header { background: #f4f1ea; padding: 10px 14px; border-bottom: 1px solid #e2ded7; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; color: #5a5752; }
     .btn-del-titik { color: #ef4444; background: none; border: none; font-size: 14px; cursor: pointer; }
     
-    .titik-body { padding: 12px 14px; }
-    .titik-input { width: 100%; font-size: 15px; font-weight: 700; border: none; border-bottom: 2px solid #e2ded7; padding-bottom: 6px; margin-bottom: 12px; outline: none; background: transparent; }
+    .titik-body { padding: 14px; }
+    .titik-input { width: 100%; font-size: 15px; font-weight: 700; border: none; border-bottom: 2px solid #e2ded7; padding-bottom: 8px; margin-bottom: 16px; outline: none; background: transparent; }
     .titik-input:focus { border-bottom-color: var(--blue-accent); }
     
-    .titik-time-row { display: flex; gap: 12px; align-items: center; }
+    /* Load/Manifest Grid (Paket, MB, BP) */
+    .load-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .load-box { background: #f9f8f6; border: 1px solid #e2ded7; border-radius: 8px; padding: 8px; text-align: center; }
+    .load-box label { display: block; font-size: 9px; font-weight: 800; color: var(--text-muted); margin-bottom: 4px; }
+    .load-box input { width: 100%; border: none; background: transparent; text-align: center; font-size: 15px; font-weight: 800; color: var(--text-dark); outline: none; font-family: 'JetBrains Mono', monospace; }
+    .load-box input::placeholder { color: #c4c1bc; }
+
+    .titik-time-row { display: flex; gap: 12px; align-items: center; background: #fdfdfc; padding: 10px; border-radius: 10px; border: 1px solid #f0ebe1; }
     .titik-time-box { flex: 1; }
     .titik-time-box label { font-size: 9px; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 4px; }
-    .titik-time-box input { width: 100%; border: 1px solid #e2ded7; border-radius: 8px; padding: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; text-align: center; background: #fff; outline: none; }
+    .titik-time-box input { width: 100%; border: 1px solid #e2ded7; border-radius: 6px; padding: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; text-align: center; background: #fff; outline: none; }
     
-    .durasi-badge { background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; font-family: 'JetBrains Mono', monospace; white-space: nowrap; margin-top: 14px; }
+    .durasi-badge { background: #e0f2fe; color: #0284c7; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; font-family: 'JetBrains Mono', monospace; white-space: nowrap; margin-top: 14px; border: 1px solid #bae6fd; }
 
     /* Dashed Buttons */
-    .dashed-box { border: 2px dashed #d8d3c8; border-radius: 12px; padding: 12px; text-align: center; color: #7a7772; font-size: 13px; font-weight: 700; background: #fcfbf9; cursor: pointer; margin: 0 0 12px 0; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .dashed-box { border: 2px dashed #d8d3c8; border-radius: 12px; padding: 14px; text-align: center; color: #7a7772; font-size: 13px; font-weight: 700; background: #fcfbf9; cursor: pointer; margin: 0 0 12px 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .dashed-box:active { background: #f0ebe1; }
 
     /* SS List */
@@ -87,6 +94,7 @@
 
     /* Floating Action Button */
     .btn-report { background-color: var(--accent-black); color: white; width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; margin-top: 8px; }
+    .btn-report:active { transform: scale(0.98); }
     .sub-hint { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8c8984; margin-top: -8px; }
   </style>
 </head>
@@ -110,7 +118,7 @@
       <button class="btn-hari-baru" onclick="resetForm()"><i class="fa-solid fa-rotate-right"></i> Hari Baru</button>
     </div>
 
-    <!-- INFO KENDARAAN & HUB -->
+    <!-- INFO KENDARAAN & RUTE UTAMA -->
     <div class="section-label">INFO KENDARAAN</div>
     <div class="form-card">
       <div class="grid-2">
@@ -121,19 +129,23 @@
         <div class="grid-col"><label class="input-label">PLAT MOBIL</label><input type="text" class="custom-input save-draft" id="plat" value="B 9596 UCY"></div>
         <div class="grid-col"><label class="input-label">TANGGAL</label><input type="text" class="custom-input save-draft" id="tanggal"></div>
       </div>
+      <div class="input-box">
+        <label class="input-label">RUTE UTAMA</label>
+        <input type="text" class="custom-input save-draft" id="rute-utama" placeholder="Contoh: STR-CGKG" value="STR-CGKG">
+      </div>
       <div class="time-grid">
         <div class="time-card"><div class="status-indicator"><i class="fa-solid fa-circle dot-green"></i> HUB STR</div><input type="time" class="time-display save-draft" id="jam-hub"></div>
         <div class="time-card"><div class="status-indicator"><i class="fa-solid fa-circle dot-red"></i> TIBA HUB</div><input type="time" class="time-display save-draft" id="jam-tiba"></div>
       </div>
     </div>
 
-    <!-- TITIK JEMPUT (DINAMIS & PERHITUNGAN WAKTU) -->
-    <div class="section-label">DAFTAR TITIK KUNJUNGAN</div>
+    <!-- IMPLANT / TITIK KUNJUNGAN (DENGAN MB & BP) -->
+    <div class="section-label">DATA IMPLANT / KUNJUNGAN</div>
     
     <div id="titik-container"></div>
     
     <div class="dashed-box" onclick="addTitikCard()">
-      <i class="fa-solid fa-location-dot"></i> Tambah Titik Kunjungan
+      <i class="fa-solid fa-plus"></i> Tambah Implant
     </div>
 
     <!-- SS (SERAH SIMPAN) -->
@@ -146,15 +158,14 @@
     <button class="btn-report" id="btn-submit" onclick="prosesLaporan()">
       <i class="fa-solid fa-square-check" style="color: #10b981;"></i> Report Keseluruhan
     </button>
-    <div class="sub-hint">Generate Format & Hitung Durasi</div>
+    <div class="sub-hint">Generate WhatsApp & Hitung Total Load</div>
 
   </div>
 
   <script>
-    // Konfigurasi GSheet URL
     const GSHEET_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_ANDA_DI_SINI";
 
-    // Engine Tanggal
+    // Auto Date Engine
     const now = new Date();
     const days = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
     const months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
@@ -170,35 +181,28 @@
 
     let titikCount = 0;
 
-    // FUNGSI LOGIKA PERHITUNGAN WAKTU (Jam Tiba - Jam Selesai)
+    // Kalkulator Durasi
     function hitungDurasi(inputTiba, inputSelesai, badgeOutput) {
       if(!inputTiba.value || !inputSelesai.value) {
-        badgeOutput.innerText = "- mnt";
-        return;
+        badgeOutput.innerText = "- mnt"; return;
       }
       const t1 = inputTiba.value.split(':');
       const t2 = inputSelesai.value.split(':');
-      
       const d1 = new Date(0, 0, 0, t1[0], t1[1], 0);
       let d2 = new Date(0, 0, 0, t2[0], t2[1], 0);
+      if(d2 < d1) d2.setDate(d2.getDate() + 1); 
       
-      if(d2 < d1) d2.setDate(d2.getDate() + 1); // Jika lewat tengah malam
-      
-      const diffMs = d2 - d1;
-      const diffMins = Math.floor(diffMs / 60000);
-      
+      const diffMins = Math.floor((d2 - d1) / 60000);
       if(diffMins >= 60) {
-        const h = Math.floor(diffMins / 60);
-        const m = diffMins % 60;
-        badgeOutput.innerText = `${h}j ${m}m`;
+        badgeOutput.innerText = `${Math.floor(diffMins / 60)}j ${diffMins % 60}m`;
       } else {
         badgeOutput.innerText = `${diffMins} mnt`;
       }
       saveDraft();
     }
 
-    // TAMBAH KARTU TITIK KUNJUNGAN
-    function addTitikCard(lokasi = '', tiba = '', selesai = '') {
+    // TAMBAH KARTU IMPLANT (DENGAN PAKET, MB, BP)
+    function addTitikCard(lokasi='', pkt='', mb='', bp='', tiba='', selesai='') {
       titikCount++;
       const container = document.getElementById('titik-container');
       const idStr = `titik-${Date.now()}`;
@@ -209,11 +213,27 @@
       
       div.innerHTML = `
         <div class="titik-header">
-          <span>TITIK KUNJUNGAN #${titikCount}</span>
+          <span>IMPLANT #${titikCount}</span>
           <button class="btn-del-titik" onclick="hapusTitik('${idStr}')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="titik-body">
-          <input type="text" class="titik-input nama-titik" placeholder="Ketik Nama Lokasi / Site..." value="${lokasi}">
+          <input type="text" class="titik-input nama-titik" placeholder="Nama Implant / Lokasi..." value="${lokasi}">
+          
+          <div class="load-grid">
+            <div class="load-box">
+              <label>JML PAKET</label>
+              <input type="number" class="in-paket" placeholder="0" value="${pkt}">
+            </div>
+            <div class="load-box">
+              <label>M-BAG (MB)</label>
+              <input type="number" class="in-mb" placeholder="0" value="${mb}">
+            </div>
+            <div class="load-box">
+              <label>BIG PARCEL (BP)</label>
+              <input type="number" class="in-bp" placeholder="0" value="${bp}">
+            </div>
+          </div>
+
           <div class="titik-time-row">
             <div class="titik-time-box">
               <label>JAM TIBA</label>
@@ -229,35 +249,28 @@
       `;
       container.appendChild(div);
 
-      // Listener untuk otomatis hitung durasi saat jam diubah
       const inTiba = div.querySelector('.jam-tiba-titik');
       const inSelesai = div.querySelector('.jam-selesai-titik');
       const badge = div.querySelector('.badge-durasi');
-      const inNama = div.querySelector('.nama-titik');
+      const inputs = div.querySelectorAll('input');
 
       inTiba.addEventListener('input', () => hitungDurasi(inTiba, inSelesai, badge));
       inSelesai.addEventListener('input', () => hitungDurasi(inTiba, inSelesai, badge));
-      inNama.addEventListener('input', saveDraft);
+      inputs.forEach(inp => inp.addEventListener('input', saveDraft));
 
-      // Hitung awal jika diload dari draft
       if(tiba && selesai) hitungDurasi(inTiba, inSelesai, badge);
-      
-      updateNomorTitik();
-      saveDraft();
+      updateNomorTitik(); saveDraft();
     }
 
     function hapusTitik(id) {
       document.getElementById(id).remove();
-      updateNomorTitik();
-      saveDraft();
+      updateNomorTitik(); saveDraft();
     }
 
     function updateNomorTitik() {
-      const headers = document.querySelectorAll('.titik-header span');
       titikCount = 0;
-      headers.forEach(h => {
-        titikCount++;
-        h.innerText = `TITIK KUNJUNGAN #${titikCount}`;
+      document.querySelectorAll('.titik-header span').forEach(h => {
+        titikCount++; h.innerText = `IMPLANT #${titikCount}`;
       });
     }
 
@@ -281,22 +294,25 @@
       document.querySelectorAll('.titik-card').forEach(card => {
         titikArr.push({
           lokasi: card.querySelector('.nama-titik').value,
+          pkt: card.querySelector('.in-paket').value,
+          mb: card.querySelector('.in-mb').value,
+          bp: card.querySelector('.in-bp').value,
           tiba: card.querySelector('.jam-tiba-titik').value,
           selesai: card.querySelector('.jam-selesai-titik').value
         });
       });
 
-      const draftData = {
+      localStorage.setItem('bts_report_draft', JSON.stringify({
         satmob: document.getElementById('satmob').value,
         asmob: document.getElementById('asmob').value,
         plat: document.getElementById('plat').value,
         tanggal: document.getElementById('tanggal').value,
+        rute: document.getElementById('rute-utama').value,
         jamHub: document.getElementById('jam-hub').value,
         jamTiba: document.getElementById('jam-tiba').value,
         titikList: titikArr,
         ssItems: Array.from(document.querySelectorAll('.ss-item')).map(i => i.value)
-      };
-      localStorage.setItem('bts_report_draft', JSON.stringify(draftData));
+      }));
     }
 
     function loadDraft() {
@@ -304,79 +320,81 @@
       if (!saved) return;
       try {
         const data = JSON.parse(saved);
-        if(data.satmob !== undefined) document.getElementById('satmob').value = data.satmob;
-        if(data.asmob !== undefined) document.getElementById('asmob').value = data.asmob;
-        if(data.plat !== undefined) document.getElementById('plat').value = data.plat;
-        if(data.tanggal !== undefined) document.getElementById('tanggal').value = data.tanggal;
-        if(data.jamHub !== undefined) document.getElementById('jam-hub').value = data.jamHub;
-        if(data.jamTiba !== undefined) document.getElementById('jam-tiba').value = data.jamTiba;
+        if(data.satmob) document.getElementById('satmob').value = data.satmob;
+        if(data.asmob) document.getElementById('asmob').value = data.asmob;
+        if(data.plat) document.getElementById('plat').value = data.plat;
+        if(data.tanggal) document.getElementById('tanggal').value = data.tanggal;
+        if(data.rute) document.getElementById('rute-utama').value = data.rute;
+        if(data.jamHub) document.getElementById('jam-hub').value = data.jamHub;
+        if(data.jamTiba) document.getElementById('jam-tiba').value = data.jamTiba;
 
-        if (data.titikList && data.titikList.length > 0) {
-          data.titikList.forEach(t => addTitikCard(t.lokasi, t.tiba, t.selesai));
-        }
-        if (data.ssItems && data.ssItems.length > 0) {
-          data.ssItems.forEach(val => addSSRow(val));
-        }
+        if (data.titikList) data.titikList.forEach(t => addTitikCard(t.lokasi, t.pkt, t.mb, t.bp, t.tiba, t.selesai));
+        if (data.ssItems) data.ssItems.forEach(val => addSSRow(val));
       } catch(e) {}
     }
 
     document.querySelectorAll('.save-draft').forEach(el => el.addEventListener('input', saveDraft));
 
     function resetForm() {
-      if (confirm("Reset data dan mulai hari baru?")) {
-        localStorage.removeItem('bts_report_draft');
-        location.reload();
+      if (confirm("Reset seluruh form untuk rute hari baru?")) {
+        localStorage.removeItem('bts_report_draft'); location.reload();
       }
     }
 
-    // SUBMIT REPORT
+    // SUBMIT REPORT (WA & API)
     function prosesLaporan() {
       const tgl = document.getElementById('tanggal').value || '-';
       const satmob = document.getElementById('satmob').value || '-';
       const asmob = document.getElementById('asmob').value || '-';
       const plat = document.getElementById('plat').value || '-';
+      const ruteUtama = document.getElementById('rute-utama').value || '-';
       const jamHub = document.getElementById('jam-hub').value || '--:--';
       const jamTiba = document.getElementById('jam-tiba').value || '--:--';
 
       let textWA = `*LAPORAN HARIAN BTS*\nTanggal: ${tgl}\n\n`;
-      textWA += `*Satmob:* ${satmob}\n*Asmob:* ${asmob}\n*Plat:* ${plat}\n\n`;
+      textWA += `*Satmob:* ${satmob}\n*Asmob:* ${asmob}\n*Plat:* ${plat}\n*Rute:* ${ruteUtama}\n\n`;
       textWA += `*HUB STR:* ${jamHub}\n`;
 
+      let totalPkt = 0, totalMB = 0, totalBP = 0;
       let payloadTitikStr = "";
       
       const titikCards = document.querySelectorAll('.titik-card');
       if(titikCards.length > 0) {
-        textWA += `\n*RUTE / TITIK KUNJUNGAN:*\n`;
+        textWA += `\n*DATA IMPLANT:*\n`;
         titikCards.forEach((card, index) => {
           const loc = card.querySelector('.nama-titik').value || '(Tanpa Nama)';
+          const p = parseInt(card.querySelector('.in-paket').value) || 0;
+          const m = parseInt(card.querySelector('.in-mb').value) || 0;
+          const b = parseInt(card.querySelector('.in-bp').value) || 0;
           const tb = card.querySelector('.jam-tiba-titik').value || '--:--';
           const sl = card.querySelector('.jam-selesai-titik').value || '--:--';
           const dr = card.querySelector('.badge-durasi').innerText;
           
-          textWA += `${index+1}. *${loc}*\n   Tiba: ${tb} | Selesai: ${sl} (Durasi: ${dr})\n`;
-          payloadTitikStr += `${loc} (${tb}-${sl}=${dr}) | `;
+          totalPkt += p; totalMB += m; totalBP += b;
+
+          textWA += `${index+1}. *${loc}*\n   📦 Pkt: ${p} | MB: ${m} | BP: ${b}\n   ⏰ Tiba: ${tb} - Selesai: ${sl} (Durasi: ${dr})\n`;
+          payloadTitikStr += `${loc} (Pkt:${p}, MB:${m}, BP:${b} | ${tb}-${sl}) || `;
         });
+        
+        // SUMMARY LOAD
+        textWA += `\n*TOTAL MUATAN:*\n📦 Paket: ${totalPkt}  |  🎒 MB: ${totalMB}  |  📦 BP: ${totalBP}\n`;
       }
 
       textWA += `\n*TIBA HUB:* ${jamTiba}\n\n`;
 
       const ssItems = Array.from(document.querySelectorAll('.ss-item')).map(i => i.value.trim()).filter(i => i !== '');
-      if (ssItems.length > 0) {
-        textWA += `*SS (Serah Simpan):*\n` + ssItems.map(i => `• ${i}`).join('\n');
-      }
-
-      // Payload JSON untuk Apps Script
-      const payload = {
-        tanggal: tgl, satmob: satmob, asmob: asmob, plat: plat,
-        jamHub: jamHub, jamTiba: jamTiba, 
-        titik: payloadTitikStr, 
-        ss: ssItems.join(' | ')
-      };
+      if (ssItems.length > 0) textWA += `*SS (Serah Simpan):*\n` + ssItems.map(i => `• ${i}`).join('\n');
 
       if (GSHEET_URL !== "https://script.google.com/macros/s/AKfycbyvGOirxyFI-txbBun0U4cLw4-ziaHUfukOhbREzYtoEWCJyB8iLURDat4Q61U06l0p/exec") {
         fetch(GSHEET_URL, {
           method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({
+            tanggal: tgl, satmob: satmob, asmob: asmob, plat: plat, rute: ruteUtama,
+            jamHub: jamHub, jamTiba: jamTiba, 
+            titik: payloadTitikStr, 
+            total_paket: totalPkt, total_mb: totalMB, total_bp: totalBP,
+            ss: ssItems.join(' | ')
+          })
         });
       }
 
