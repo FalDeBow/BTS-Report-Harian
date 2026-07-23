@@ -537,7 +537,7 @@ body{
   <div class="di">
     <div class="di-icon">🚚</div>
     <div class="di-info">
-      <div class="di-title">BTS Report Daily</div>
+      <div class="di-title">Bulky Transport Daily</div>
       <div class="di-sub" id="di-date">--/--/----</div>
     </div>
     <div class="di-pill" id="pill">Draft</div>
@@ -586,7 +586,7 @@ body{
   </div>
 
   <!-- SS LIST -->
-  <div class="sec-label">SS (Serah Simpan)</div>
+  <div class="sec-label">SS (Staging Store)</div>
   <div id="ss-list"></div>
   <button class="btn-add" onclick="addSS()">＋ Tambah SS</button>
 
@@ -677,7 +677,7 @@ body{
 <script>
 // ==============================================
 // GANTI STRING INI DENGAN URL WEB APP ANDA
-const GSHEET_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI";
+const GSHEET_URL = "https://script.google.com/macros/s/AKfycbzcg1cnYXt_n80rurvF7bBB9Z5dpruWkCMUJ5gbcXQJFFQEqXCyBVecUpv2GXVq-T1l/exec";
 // ==============================================
 
 const PKEY='bts_p3', DKEY='bts_d3';
@@ -1212,7 +1212,7 @@ function sendWa(){
 
 // ── SEND TO GSHEET & WA ──
 function sendToGSheet() {
-  if (GSHEET_URL === "https://script.google.com/macros/s/AKfycbyvGOirxyFI-txbBun0U4cLw4-ziaHUfukOhbREzYtoEWCJyB8iLURDat4Q61U06l0p/exec") {
+  if (GSHEET_URL === "https://script.google.com/macros/s/AKfycbzcg1cnYXt_n80rurvF7bBB9Z5dpruWkCMUJ5gbcXQJFFQEqXCyBVecUpv2GXVq-T1l/exec") {
     toast('⚠️ URL Google Script belum diisi di kode!');
     return;
   }
@@ -1239,16 +1239,34 @@ function sendToGSheet() {
     laporan_teks: currentReport 
   };
 
+  // Menggunakan mode text/plain untuk bypass CORS preflight browser
   fetch(GSHEET_URL, {
     method: 'POST',
-    mode: 'no-cors', 
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8', 
+    },
     body: JSON.stringify(payload)
   })
-  .then(() => {
-    toast('✅ Data masuk ke GSheet!');
+  .then(response => response.json())
+  .then(data => {
+    if(data.status === "success") {
+      toast('✅ Data berhasil masuk ke GSheet!');
+    } else {
+      toast('⚠️ Terhubung, tapi ada kendala pada sheet.');
+    }
     btn.textContent = '📊 GSheet & WA';
     btn.disabled = false;
+    
+    // Setelah notifikasi sukses, tunda 1 detik lalu buka WA otomatis
+    setTimeout(sendWa, 1000);
+  })
+  .catch(err => {
+    console.error(err);
+    toast('❌ Gagal sinkronisasi. GSheet URL salah atau timeout.');
+    btn.textContent = '📊 GSheet & WA';
+    btn.disabled = false;
+  });
+}
     
     // Buka otomatis WA
     setTimeout(sendWa, 800);
