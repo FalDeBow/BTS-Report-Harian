@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BTS Report Daily</title>
+<title>Daily Report Transport "Bulky Sunter"</title>
 <meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -306,6 +306,14 @@ body{
 .meta-sep{color:var(--border2)}
 .meta-ket{flex:1;font-family:var(--font);font-size:12px;color:var(--ink2);border:none;outline:none;background:transparent}
 .meta-ket::placeholder{color:var(--ink3)}
+.loc-pin-btn{
+  display:none;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;color:var(--blue);
+  background:var(--blue-bg);border:1px solid rgba(30,64,175,.2);
+  border-radius:12px;padding:2px 8px;text-decoration:none;
+  white-space:nowrap;flex-shrink:0
+}
+.loc-pin-btn:active{opacity:.7}
 .dev{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
 .dev-late{background:var(--warn-bg);color:var(--warn)}
 .dev-ok{background:var(--green-bg);color:var(--green)}
@@ -583,25 +591,25 @@ body{
     </div>
   </div>
 
-  <div class="sec-label">SS (Serah Simpan)</div>
+  <div class="sec-label">SS (Staging Store)</div>
   <div id="ss-list"></div>
   <button class="btn-add" onclick="addSS()">＋ Tambah SS</button>
 
-  <div class="sec-label">Titik Kirim</div>
+  <div class="sec-label">TITIK JEMPUT</div>
   
   <div class="progress-wrap">
-    <div class="progress-text" id="progress-text">Belum ada Titik Kirim</div>
+    <div class="progress-text" id="progress-text">Belum ada TITIK JEMPUT</div>
     <div class="progress-track">
       <div class="progress-bar" id="progress-bar"></div>
     </div>
   </div>
 
   <div id="stops"></div>
-  <button class="btn-add" onclick="addStop()">＋ Tambah Titik Kirim</button>
+  <button class="btn-add" onclick="addStop()">＋ Tambah TITIK JEMPUT</button>
 
-  <div class="sec-label">Rekap Titik Kirim</div>
+  <div class="sec-label">REKAPITULASI</div>
   <div class="rekap-card">
-    <div class="rekap-title" id="rekap-title-main">Total Titik Kirim (diluar SS)</div>
+    <div class="rekap-title" id="rekap-title-main">Total Muatan (PickUp)</div>
     <div class="rekap-grid">
       <div class="rk"><div class="rk-num" id="r-paket">0</div><div class="rk-lbl">Paket</div></div>
       <div class="rk"><div class="rk-num" id="r-mb">0</div><div class="rk-lbl">MB</div></div>
@@ -613,13 +621,18 @@ body{
     </div>
   </div>
 
-</div><div class="bar">
+</div>
+
+<div class="bar">
   <div class="bar-row">
     <button class="btn-cgkg" id="btn-report-ss" onclick="reportSSPicker()">📋 Report SS</button>
     <button class="btn-wa" onclick="showReport('all')">✅ Report Keseluruhan</button>
   </div>
   <div class="bar-hint">Tap untuk preview → kirim WhatsApp & GSheet</div>
 </div>
+
+<!-- DATALIST NAMA BAKU TITIK JEMPUT / KIRIM -->
+<datalist id="list-nama-baku"></datalist>
 
 <div class="modal-ov" id="modal-ov" onclick="closeModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
@@ -664,9 +677,89 @@ body{
 
 <script>
 // ==============================================
-// GANTI STRING INI DENGAN URL WEB APP ANDA
-const GSHEET_URL = "https://script.google.com/macros/s/AKfycbzcg1cnYXt_n80rurvF7bBB9Z5dpruWkCMUJ5gbcXQJFFQEqXCyBVecUpv2GXVq-T1l/exec";
+// GANTI STRING INI DENGAN URL WEB APP APPS SCRIPT ANDA
+const GSHEET_URL = "https://script.google.com/macros/s/AKfycbxYrGfEttbGo3JHNx4waOvHdXx32lOU3Ti7LjPxNKHFixuQZ4JnvT6_Wh4vqjHCTFNt/exec";
 // ==============================================
+
+// ── DAFTAR NAMA BAKU TITIK JEMPUT / KIRIM ──
+const NAMA_BAKU = [
+  "SS TBOR", "SS PJIR0", "JOY LIFE TOWEL", "Scarlett Whitening Official Shop", "YUMMY BITE SHOP",
+  "IDEALIFE", "BAWANGBAWANG", "ISKU OFFICIAL SHOP", "HOME MASTER", "LEMONILO", "smartchoice Shop",
+  "Luckymore Indonesia Official Store", "JOYKO OFFICIAL", "SS KBAN0", "JAKMALL INDONESIA", "Best Gift JKT",
+  "OEMAH HERBORIST", "POPENJOY.ID", "MADU TAVA OFFICIAL STORE", "MOEGEN COOCKWARE", "DAUN UBI", "CC AUTOMAX",
+  "ALKES JAYA MEDIKA", "ONEMED CIPONDOH", "SS BEDA0", "LARIS FURNITURE DAAN MOGOT", "TITIPAJA DAAN MOGOT",
+  "IRONHOOF", "Mercredi Official Store", "ZERO PROMOSI", "CANDY PIE PETS", "SS SPON0", "SS CSUK0",
+  "MONA AMOUR COLLECTION", "Selimut-store", "OOS", "PLATERIE", "PIGEON INDONESIA OFFICIAL STORE",
+  "KILATPACKING - DKMPACKING", "SS PRPJ0", "GOTO LIVING", "SS CPOD0", "HUGO HOUSEWARE JAKARTA", "WOOKFUN",
+  "pet_new_land", "TOKO BUMI AGUNG", "SKMEI", "NANKAI", "SENTRAS HANGER", "KITCHEN STUFF", "douuob",
+  "DSM SHOP", "XIAOMI OFFICIAL STORE", "Either.id", "MIX ACC 88", "GLODOK 123", "TMD.ID",
+  "Onehealth Medical Indonesia Official Store", "Dihom", "50011691 - PENGUSAHA NEGLASARI", "FIT U OFFICIAL STORE",
+  "Dekkson Official Shop", "PLASTIKO", "LIBRA PACK", "Smart Outlet", "OLYM.FIT Official Store",
+  "SAMUDRA SEMBAKO", "LIEM GROUP", "BIG SALE MALL JAKARTA", "Rider Official Store",
+  "50010182 - PENGUSAHA CENGKARENG 07", "My Bag Store Official", "KONIQ", "EGOGO", "KOMURA", "WALL DECO",
+  "OFFICIAL APR", "PUSAT IMPOR", "SUGARBABY OFFICIAL SHOP", "50009584 - PENGUSAHA KALIDERES 02",
+  "MAHAKARYA MOTOR", "BUDS ORGANIC INDONESIA", "HATHIN MUI KAPUK RAYA", "DUNIA TAPE", "LANCAR JAYA STORE",
+  "STAR SHOP 999", "MYROOTS INDONESIA", "SHENAR 168 KAPUK", "LADIES STAR", "SAHABAT GEMILANG JAYA",
+  "50009575 - PENGUSAHA PENJARINGAN", "50011861 - PENGUSAHA GROGOL PETAMBURAN 04", "HI LUXURY BOX",
+  "Kremes Kraton Official", "VIRA DAMAYANTI", "WINNER PET CARE", "GENKI PLANT", "MIFA OFFICIAL STORE",
+  "EPOCH", "Beeloft baby", "SUN ACCESORIES HP", "Kimia store..!", "Dept Store Official Shop", "STP",
+  "AHA COMMERCE", "50010419 - PENGUSAHA PENJARINGAN 03", "SLEEP MAX", "DR. ISLA INDONESIA STORE",
+  "INDOSHARE OFFICIAL SHOP", "PT ANEST bitung", "EXPOSE_MALL", "JAYMAX", "Hy living museum",
+  "ASTANAWA PLASTINDO", "50010405 - PENGUSAHA TELUKNAGA 02", "NC12", "CICI HOME", "Hopeshow",
+  "DISNEY HEADPHONE STORE", "Geetoy", "BRILIANT HOME", "Palunaya", "Majes Pet Official Store", "MASAK MASAK",
+  "SIRCLO CENGKARENG", "UNICASE STORE", "FORUS SNACK", "MEYKEL JAYA BOX", "RX Aksesoris HP", "Eyesight",
+  "GCL OFFICIAL STORE", "50009694 - PENGUSAHA CENGKARENG 05", "50009668 - PENGUSAHA CENGKARENG 04",
+  "RDL OFFICIAL STORE", "CROWNFILTER", "SR JADE COLLECTION", "MUSCLE FIRST OFFICIAL", "CENNY STORE",
+  "DAIOTY OFFICIAL STORE", "SANRIO168", "Serea Home Living", "Starrysky-", "50009611 - PENGUSAHA BATUCEPER",
+  "50009746 - PENGUSAHA KOSAMBI 03", "50011858 - PENGUSAHA KOSAMBI 04", "MULTI HANGER", "PAPERSHOP",
+  "ANEKA BUNGKUS PT DELCOMAS", "ORICO INDONESIA", "PAPI HUGO", "VENTION KAMAL", "MGM ONLINE", "HOMU",
+  "HOUSE OF L", "50009695 - PENGUSAHA GROGOL PETAMBURAN 02", "Sleepmax_Official_Store",
+  "50011853 - PENGUSAHA KELAPA GADING 02", "FASTOCK CILINCING", "OLAIF OFFICIAL SHOP", "GRANOLOGY",
+  "EXINDO", "ADVANCE DIGITALS KELAPA GADING", "BAYININJA", "Nomar Kopi", "PROMAKER OFFICIAL", "TRANSTORE",
+  "BIOWASTE OFFICIAL STORE", "CUPIKA", "Happy_kids.tanah.abang", "BARCODE ZONE", "OHAYO MART",
+  "RESELLER CENTER", "Ristianastar", "Kimon Accecories", "HOME WALLPAPER", "MINIBEST", "DUNIA PLASTIK88",
+  "WARUNG LISTRIK", "50011873 - PENGUSAHA KALIDERES 03", "NAGA PUSPA", "BADRANAYA STORE",
+  "50009492 - PENGUSAHA ANTERAJA CENGKARENG", "GLOBAL PROMOSI", "Speeds Official Shop", "BOWIN INDONESIA",
+  "50009645 - PENGUSAHA ANTERAJA BENDA", "ASIA ECS 05", "BREYLEE", "MATSUDA", "Guideyuk.store",
+  "JELUCERNAJEWEL", "Health ID", "INDO HAPPY SHOP", "RAJA PACKING OFFICIAL STORE", "TOKO PAK BOSS",
+  "YONGKI KOMALADI OFFICIAL SHOP", "50009555 - PENGUSAHA PADEMANGAN 03", "DELI STATIONERY",
+  "50009533 - PENGUSAHA KOSAMBI", "ILOVEDIY: Home Living", "BJONLINEMALL", "FURRY FRIENDS ROYAL",
+  "PixelLink Official Store", "Chalonese Indonesia Official", "REALME AUTHORIZED STORE",
+  "SIMPLUS OFFICIAL STORE", "NYONYA PIYAMA", "GROSIR ITC", "LOVANA STORY OFFICIAL SHOP", "YUNYUN SHOP",
+  "HCH ONLINE OFFICIAL STORE", "ZIVOKA Official Store", "TOKO DISEN / SI MONYET", "TOMMYACCSTORE",
+  "ISIDORABERNICE", "50009524 - PENGUSAHA TAMBORA", "UNEED INDONESIA", "GAYA MOTOR JAKARTA, ADW MOTOR",
+  "BAGUS OFFICIAL SHOP", "Dairy Dose", "SA grosir", "Mitsushi official store", "BIDEN Official Shop",
+  "Mega_Jaya_Abadi", "Yumiolshopinter", "JAKARTA_GROSIR_WATCH", "E Station", "RUMAHKU99", "RUMAH PACKAGING",
+  "COCOMELON JKT", "50009654 - Pengusaha Cengkareng 03", "SIRCLO BITESHIP", "CENTRO GROSIR",
+  "UTAMA ELECTRONIC", "WATERU BAMBOO TISSUE", "KING RABBIT OFFICIAL SHOP", "RUMIX", "delapan.alkes",
+  "SIRCLO INDOPAKET", "50009662 - PENGUSAHA TAMAN SARI 02", "ARNOLD", "Optima Arang Briket", "COCO-ONLINE",
+  "50009525 - PENGUSAHA ANTERAJA TANJUNG PRIOK", "BE MODE", "FINGERLAND", "ZAIN COLLECTION HIJAB",
+  "INKAC Official Store", "SUYANTICHEN", "SANDISK OFFICIAL", "BESTDEAL ACCESORIES", "DISTRIBUTOR LAPTOP",
+  "Dismak", "50011837 - PENGUSAHA JOHAR BARU", "DKHOME88", "ELFS SHOP", "50009996 - PENGUSAHA CENGKARENG 06",
+  "MEDICAL ONLINE OFFICIAL SHOP", "50010299 - PENGUSAHA CIPONDOH 02", "SVARGA YOGA", "JKT48 Official Store",
+  "INDOWARE ONLINE", "CRYSTALLPOT", "MESIN JAHIT", "BUYPLAY", "R A Y I E", "REFORMASI COMPUTER",
+  "ELLENHARD.ID", "Kapal Perang", "BARBERSUPPLY INDO", "Hydrofarm Indonesia Official Shop", "DUNIA COMPUTER",
+  "MARCOLINO HELMET", "LARIS FURNITURE US", "Home-Living Stuff", "Toyspedia", "SOPAMI OFFICIAL SHOP",
+  "NORTHSIDER COFFE ROASTERY", "50003991 - SICEPAT POINT GERBANG PORIS", "50010303 - PENGUSAHA PINANG 02",
+  "50009561 - PENGUSAHA CIPONDOH", "LIMITLESS OFFICIAL STORE", "IMPORTIR ACC STORE", "Holika Holika Indonesia",
+  "GROSIR KITCHENWARE", "BEORGANIK", "50009683 - Pengusaha Grogol Petamburan", "50009686 - PENGUSAHA KEBON JERUK 03",
+  "50009707 - PENGUSAHA GROGOL PETAMBURAN 03", "MVR", "SUKSESLESTARI 88", "MANIA HP", "LuckyCollection",
+  "WMFC TOY", "FURRY FRIENDS", "DHP.Inc", "Hyderson Official Shop", "DELITAPE", "NIO.FARM JAKARTA",
+  "Bagmart.co", "Ztarshop", "INDO UTAMA OTOPARTS", "M2000 Official Store", "Murah Mentok", "Kelly Official Shop",
+  "RACOON Official Shop", "50011859 - Pengusaha Tambora 05", "PT NET PERSADA INDONESIA", "KILAT PACKING",
+  "VIRELAI'S SHOP [CORGI TEKNIK]", "SIRCLO STORAFLOW G198 SEPATAN", "50009717 - PENGUSAHA TANGERANG",
+  "50010307 - PENGUSAHA SEPATAN", "ID Express Oxygen", "LUXASIA", "Gramedia Official Store Cilincing",
+  "Warehouse FAS MARUNDA", "50014805 - PENGUSAHA KOJA 03", "WENDY", "VICLOOK Official Store",
+  "WH Ethix Kelapa Gading", "MAXXI BIKE", "50009675 - Pengusaha Koja", "KURMA ALIF (LA TAHZAN)"
+];
+
+function renderDatalistBaku() {
+  const dl = $('list-nama-baku');
+  if(!dl) return;
+  // Mengurutkan & menghapus duplikasi nama
+  const uniqueNames = [...new Set(NAMA_BAKU)].sort();
+  dl.innerHTML = uniqueNames.map(nama => `<option value="${esc(nama)}">`).join('');
+}
 
 const PKEY='bts_p3', DKEY='bts_d3';
 let stopIdx=0, implantIdx=0, ssIdx=0, modalCtx=null, currentReport='';
@@ -718,13 +811,12 @@ function rekal(){
 function updateProgressUI() {
   const ids = stopIds();
   if (ids.length === 0) {
-    $('progress-text').textContent = 'Belum ada Titik Kirim';
+    $('progress-text').textContent = 'Belum ada TITIK JEMPUT';
     $('progress-bar').style.width = '0%';
     return;
   }
   let done = 0;
   ids.forEach(i => {
-    // Dianggap selesai jika jam 'Brkt' (Berangkat dari lokasi) sudah terisi
     if ($(`tbtn-Brkt-${i}`)?.dataset?.t) done++;
   });
   const pct = Math.round((done / ids.length) * 100);
@@ -732,7 +824,7 @@ function updateProgressUI() {
   $('progress-bar').style.width = `${pct}%`;
 }
 
-// ── TOMBOL REPORT: sembunyikan "Report SS" jika belum ada SS ──
+// ── TOMBOL REPORT ──
 function updateReportButtons(){
   const has=ssIds().length>0;
   const btn=$('btn-report-ss');
@@ -765,7 +857,51 @@ function toggleCollapse(i) {
   if(el) el.classList.toggle('collapsed');
 }
 
-// ── ADD STOP (WITH COLLAPSIBLE BODY) ──
+// ── GPS PIN LOCATION FUNCTION ──
+function getGPSLocation(i) {
+  if (!navigator.geolocation) {
+    toast('⚠️ Perangkat tidak mendukung GPS');
+    return;
+  }
+  toast('📍 Mengambil pin lokasi...');
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+      _setLocation(i, mapUrl);
+      toast('📍 Pin lokasi berhasil disimpan!');
+      autoSave();
+    },
+    (err) => {
+      console.warn('GPS Error:', err);
+      toast('⚠️ Gagal mengambil lokasi GPS');
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+}
+
+function _setLocation(i, url) {
+  const btn = $(`tbtn-Tiba-${i}`);
+  if (btn) btn.dataset.loc = url;
+  const pinBtn = $(`loc-${i}`);
+  if (pinBtn) {
+    pinBtn.href = url;
+    pinBtn.style.display = 'inline-flex';
+  }
+}
+
+function _clearLocation(i) {
+  const btn = $(`tbtn-Tiba-${i}`);
+  if (btn) btn.dataset.loc = '';
+  const pinBtn = $(`loc-${i}`);
+  if (pinBtn) {
+    pinBtn.href = '#';
+    pinBtn.style.display = 'none';
+  }
+}
+
+// ── ADD STOP ──
 function addStop(d={}){
   stopIdx++; const i=stopIdx;
   const el=document.createElement('div');
@@ -775,7 +911,7 @@ function addStop(d={}){
     <div class="stop-hd">
       <button class="stop-btn-collapse" onclick="toggleCollapse(${i})" title="Lipat/Buka">▼</button>
       <div class="stop-num">${i}</div>
-      <input class="stop-name" id="sn-${i}" placeholder="Nama titik kirim..." value="${esc(d.nama)}">
+      <input class="stop-name" id="sn-${i}" list="list-nama-baku" placeholder="Pilih/ketik nama titik..." value="${esc(d.nama)}">
       <select class="stop-trip" id="st-${i}" title="Tandai Trip ke berapa">
         <option value="">Trip</option>
         <option value="Trip 1"${d.trip==='Trip 1'?' selected':''}>Trip 1</option>
@@ -798,6 +934,7 @@ function addStop(d={}){
         <input class="meta-eta" id="se-${i}" type="text" inputmode="numeric" maxlength="5" placeholder="--:--" value="${d.eta||''}" oninput="maskTime(this)">
         <span class="meta-sep">|</span>
         <input class="meta-ket" id="sk-${i}" placeholder="keterangan..." value="${esc(d.ket)}">
+        <a class="loc-pin-btn" id="loc-${i}" href="#" target="_blank" title="Buka di Google Maps">📍 Pin Maps</a>
         <div id="dev-${i}" style="display:none"></div>
       </div>
       <div class="times">
@@ -817,6 +954,7 @@ function addStop(d={}){
   $(`sk-${i}`).addEventListener('input', autoSave);
   $(`st-${i}`).addEventListener('change', autoSave);
   ['Tiba','Brkt'].forEach(k=>{ const v=d[k.toLowerCase()]; if(v&&v!=='-') _setTime(k,i,v); });
+  if(d.loc) _setLocation(i, d.loc);
   calcDev(i); rekal();
 }
 
@@ -848,7 +986,7 @@ function addSS(d={}){
       <div class="cgkg-hd-left">
         <div class="cgkg-badge">📦</div>
         <div style="min-width:0;flex:1">
-          <input class="cgkg-title-inp" id="ss-name-${i}" placeholder="Nama SS (cth: SS CGKG)" autocomplete="off" value="${esc(d.name)}">
+          <input class="cgkg-title-inp" id="ss-name-${i}" list="list-nama-baku" placeholder="Nama SS (cth: SS CGKG)" autocomplete="off" value="${esc(d.name)}">
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:6px">
@@ -905,10 +1043,14 @@ function stampTime(k,i){
   _setTime(k,i,nowt());
   $(`tbtn-${k}-${i}`).classList.add('flash');
   setTimeout(()=>$(`tbtn-${k}-${i}`)?.classList.remove('flash'),500);
-  calcDev(i); autoSave();
-  rekal(); // Memicu Progress Bar Update
   
-  // UX Auto-Collapse jika jam Berangkat diklik
+  if (k === 'Tiba') {
+    getGPSLocation(i);
+  }
+
+  calcDev(i); autoSave();
+  rekal();
+  
   if(k === 'Brkt') {
       setTimeout(() => { $(`stop-${i}`)?.classList.add('collapsed'); }, 600);
   }
@@ -940,6 +1082,7 @@ function _clearTime(k,i){
   if(btn){ btn.dataset.t=''; btn.classList.remove('on','flash'); }
   if(val) val.textContent='--:--';
   if(edit) edit.style.display='none';
+  if(k === 'Tiba') _clearLocation(i);
 }
 function _applyJam(key,t){
   const btn=$(`jbtn-${key}`), val=$(`jval-${key}`), edit=$(`jedit-${key}`);
@@ -1030,7 +1173,7 @@ function resetModal(){
 
 // ── HARI BARU ──
 function newDay(){
-  if(!confirm('Reset data harian?\n(Nama titik kirim tetap tersimpan)')) return;
+  if(!confirm('Reset data harian?\n(Nama TITIK JEMPUT tetap tersimpan)')) return;
   $('f-tgl').value=new Date().toISOString().split('T')[0];
   $('f-noted').value='';
   ['brkt','hub'].forEach(k=>_clearJam(k));
@@ -1108,7 +1251,6 @@ function buildAllReport(){
   const brkt=$('jbtn-brkt')?.dataset?.t||'-';
   const hub=$('jbtn-hub')?.dataset?.t||'-';
 
-  // Header
   let txt='*Daily Report BTS*\n\n';
   if(satmob) txt+='*Satmob : '+satmob+'*\n';
   if(asmob) txt+='*Asmob : '+asmob+'*\n';
@@ -1118,7 +1260,6 @@ function buildAllReport(){
   txt+='*Rute : '+rute+'*\n\n';
   txt+='*Berangkat : '+brkt+'*\n\n';
 
-  // SS (bisa lebih dari satu)
   ssIds().forEach(i=>{
     const p=+($(`ss-paket-${i}`)?.value||0);
     const m=+($(`ss-mb-${i}`)?.value||0);
@@ -1134,7 +1275,6 @@ function buildAllReport(){
     txt+='Berangkat : '+brktSS+'\n\n';
   });
 
-  // Titik Kirim (TANPA CGKG)
   stopIds().forEach(i=>{
     const nama=$('sn-'+i)?.value||'Stop '+i;
     const trip=$('st-'+i)?.value||'';
@@ -1146,19 +1286,19 @@ function buildAllReport(){
     const ket=$('sk-'+i)?.value||'';
     const tiba=$('tbtn-Tiba-'+i)?.dataset?.t||'-';
     const sbrkt=$('tbtn-Brkt-'+i)?.dataset?.t||'-';
+    const loc=$('tbtn-Tiba-'+i)?.dataset?.loc||'';
     const ext=[];
     if(mb>0) ext.push(mb+'MB');
     if(bp>0) ext.push(bp+'BP');
     var extStr=ext.length?' ('+ext.join(' + ')+')':'';
     txt+='*'+namaFull+' : '+paket.toLocaleString('id')+extStr+'*\n';
     if(eta) txt+='ETA : '+eta+'\n';
-    if(ket) txt+='KET : '+ket+'\n\n';
-    else txt+='\n';
+    if(ket) txt+='KET : '+ket+'\n';
     txt+='Tiba : '+tiba+'\n';
+    if(loc) txt+='Pin Maps : '+loc+'\n';
     txt+='Berangkat : '+sbrkt+'\n\n';
   });
 
-  // Total hanya titik kirim
   let tp=0, tm=0, tb=0;
   stopIds().forEach(i=>{
     tp+=+($('sp-'+i)?.value||0);
@@ -1173,7 +1313,7 @@ function buildAllReport(){
   return txt;
 }
 
-// ── PREVIEW & WA Saja ──
+// ── PREVIEW & WA ──
 let _previewMode='all', _previewSSIdx=null;
 function showReport(mode,ssIdx){
   _previewMode=mode; _previewSSIdx=ssIdx;
@@ -1200,7 +1340,7 @@ function sendWa(){
 
 // ── SEND TO GSHEET & WA ──
 function sendToGSheet() {
-  if (GSHEET_URL === "https://script.google.com/macros/s/AKfycbzcg1cnYXt_n80rurvF7bBB9Z5dpruWkCMUJ5gbcXQJFFQEqXCyBVecUpv2GXVq-T1l/exec") {
+  if (GSHEET_URL === "PASTE_URL_WEB_APP_APPS_SCRIPT_ANDA_DISINI") {
     toast('⚠️ URL Google Script belum diisi di kode!');
     return;
   }
@@ -1227,7 +1367,6 @@ function sendToGSheet() {
     laporan_teks: currentReport 
   };
 
-  // Menggunakan mode text/plain untuk bypass CORS preflight browser
   fetch(GSHEET_URL, {
     method: 'POST',
     headers: {
@@ -1244,8 +1383,6 @@ function sendToGSheet() {
     }
     btn.textContent = '📊 GSheet & WA';
     btn.disabled = false;
-    
-    // Setelah notifikasi sukses, tunda 1 detik lalu buka WA otomatis
     setTimeout(sendWa, 1000);
   })
   .catch(err => {
@@ -1284,6 +1421,7 @@ function _doSave(){
         ket:$(`sk-${i}`)?.value||'', trip:$(`st-${i}`)?.value||'',
         tiba:$(`tbtn-Tiba-${i}`)?.dataset?.t||'',
         brkt:$(`tbtn-Brkt-${i}`)?.dataset?.t||'',
+        loc:$(`tbtn-Tiba-${i}`)?.dataset?.loc||''
       }))
     }));
     pillOk();
@@ -1307,7 +1445,6 @@ function load(){
     if(d.brkt) _applyJam('brkt',d.brkt);
     if(d.hub)  _applyJam('hub',d.hub);
 
-    // ── SS list ──
     $('ss-list').innerHTML=''; ssIdx=0;
     let ssListData;
     if(Array.isArray(p.ss)) ssListData=p.ss;
@@ -1328,7 +1465,7 @@ function load(){
       addStop({
         nama:s.nama, paket:ds2.paket||'', mb:ds2.mb||'', bp:ds2.bp||'',
         eta:ds2.eta||'', ket:ds2.ket||'', trip:ds2.trip||'',
-        tiba:ds2.tiba, brkt:ds2.brkt
+        tiba:ds2.tiba, brkt:ds2.brkt, loc:ds2.loc||''
       });
     });
     rekal(); updateDateHeader();
@@ -1358,6 +1495,8 @@ function checkNewDay(){
 }
 
 // ── INIT ──
+renderDatalistBaku();
+
 if(!load()){
   $('f-tgl').value=new Date().toISOString().split('T')[0];
   $('f-asmob').value='RIDZKY RAMADHAN';
