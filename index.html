@@ -532,12 +532,11 @@ body{
 </head>
 <body>
 
-<!-- DYNAMIC ISLAND -->
 <div class="di-wrap">
   <div class="di">
     <div class="di-icon">🚚</div>
     <div class="di-info">
-      <div class="di-title">Bulky Transport Daily</div>
+      <div class="di-title">BTS Report Daily</div>
       <div class="di-sub" id="di-date">--/--/----</div>
     </div>
     <div class="di-pill" id="pill">Draft</div>
@@ -551,7 +550,6 @@ body{
 
 <div class="wrap">
 
-  <!-- INFO -->
   <div class="sec-label">Info Kendaraan</div>
   <div class="card">
     <div class="ig-grid">
@@ -585,15 +583,12 @@ body{
     </div>
   </div>
 
-  <!-- SS LIST -->
-  <div class="sec-label">SS (Staging Store)</div>
+  <div class="sec-label">SS (Serah Simpan)</div>
   <div id="ss-list"></div>
   <button class="btn-add" onclick="addSS()">＋ Tambah SS</button>
 
-  <!-- TITIK KIRIM -->
   <div class="sec-label">Titik Kirim</div>
   
-  <!-- PROGRESS BAR UX -->
   <div class="progress-wrap">
     <div class="progress-text" id="progress-text">Belum ada Titik Kirim</div>
     <div class="progress-track">
@@ -604,7 +599,6 @@ body{
   <div id="stops"></div>
   <button class="btn-add" onclick="addStop()">＋ Tambah Titik Kirim</button>
 
-  <!-- REKAP -->
   <div class="sec-label">Rekap Titik Kirim</div>
   <div class="rekap-card">
     <div class="rekap-title" id="rekap-title-main">Total Titik Kirim (diluar SS)</div>
@@ -619,10 +613,7 @@ body{
     </div>
   </div>
 
-</div><!-- /wrap -->
-
-<!-- BOTTOM BAR -->
-<div class="bar">
+</div><div class="bar">
   <div class="bar-row">
     <button class="btn-cgkg" id="btn-report-ss" onclick="reportSSPicker()">📋 Report SS</button>
     <button class="btn-wa" onclick="showReport('all')">✅ Report Keseluruhan</button>
@@ -630,7 +621,6 @@ body{
   <div class="bar-hint">Tap untuk preview → kirim WhatsApp & GSheet</div>
 </div>
 
-<!-- MODAL EDIT JAM -->
 <div class="modal-ov" id="modal-ov" onclick="closeModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
@@ -644,7 +634,6 @@ body{
   </div>
 </div>
 
-<!-- SS PICKER MODAL -->
 <div class="modal-ov" id="ss-picker-ov" onclick="closeSSPicker()">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
@@ -654,7 +643,6 @@ body{
   </div>
 </div>
 
-<!-- PREVIEW MODAL -->
 <div class="preview-ov" id="preview-ov" onclick="if(event.target===this)closePreview()">
   <div class="preview-box">
     <div class="preview-hd">
@@ -1263,17 +1251,6 @@ function sendToGSheet() {
   .catch(err => {
     console.error(err);
     toast('❌ Gagal sinkronisasi. GSheet URL salah atau timeout.');
-    btn.textContent = '📊 GSheet & WA';
-    btn.disabled = false;
-  });
-}
-    
-    // Buka otomatis WA
-    setTimeout(sendWa, 800);
-  })
-  .catch(err => {
-    console.error(err);
-    toast('❌ Gagal kirim ke GSheet.');
     btn.textContent = '📊 GSheet & WA';
     btn.disabled = false;
   });
