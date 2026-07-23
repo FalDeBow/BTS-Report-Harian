@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Daily Report Transport "Bulky Sunter"</title>
+<title>Transport Bulky (Report)</title>
 <meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -352,17 +352,17 @@ body{
 }
 .btn-add:active{border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
 
-/* ── REKAP TOTAL ── */
-.rekap-card{
+/* ── Rekapitulasi TOTAL ── */
+.Rekapitulasi-card{
   background:var(--ink);border-radius:var(--r);
   margin-bottom:10px;overflow:hidden;
   box-shadow:0 4px 20px rgba(0,0,0,.15)
 }
-.rekap-title{
+.Rekapitulasi-title{
   font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
   color:rgba(255,255,255,.4);padding:12px 16px 6px
 }
-.rekap-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.Rekapitulasi-grid{display:grid;grid-template-columns:repeat(3,1fr)}
 .rk{padding:10px 12px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
 .rk:last-child{border-right:none}
 .rk-num{font-size:28px;font-weight:700;color:#fff;font-family:var(--mono);line-height:1}
@@ -544,7 +544,7 @@ body{
   <div class="di">
     <div class="di-icon">🚚</div>
     <div class="di-info">
-      <div class="di-title">Bulky Transport Report</div>
+      <div class="di-title">Daily Report</div>
       <div class="di-sub" id="di-date">--/--/----</div>
     </div>
     <div class="di-pill" id="pill">Draft</div>
@@ -558,7 +558,7 @@ body{
 
 <div class="wrap">
 
-  <div class="sec-label">Info Kendaraan</div>
+  <div class="sec-label">Detil Operasional</div>
   <div class="card">
     <div class="ig-grid">
       <div class="ig"><div class="ig-lbl">Satmob</div><input class="ig-inp" id="f-satmob" placeholder="Nama driver" autocomplete="off"></div>
@@ -595,22 +595,22 @@ body{
   <div id="ss-list"></div>
   <button class="btn-add" onclick="addSS()">＋ Tambah SS</button>
 
-  <div class="sec-label">TITIK JEMPUT</div>
+  <div class="sec-label">PickUp Point</div>
   
   <div class="progress-wrap">
-    <div class="progress-text" id="progress-text">Belum ada TITIK JEMPUT</div>
+    <div class="progress-text" id="progress-text">Belum ada PickUp Point</div>
     <div class="progress-track">
       <div class="progress-bar" id="progress-bar"></div>
     </div>
   </div>
 
   <div id="stops"></div>
-  <button class="btn-add" onclick="addStop()">＋ Tambah TITIK JEMPUT</button>
+  <button class="btn-add" onclick="addStop()">＋ Tambah PickUp Point</button>
 
-  <div class="sec-label">REKAPITULASI</div>
-  <div class="rekap-card">
-    <div class="rekap-title" id="rekap-title-main">Total Muatan (PickUp)</div>
-    <div class="rekap-grid">
+  <div class="sec-label">Rekapitulasi PickUp Point</div>
+  <div class="Rekapitulasi-card">
+    <div class="Rekapitulasi-title" id="Rekapitulasi-title-main">Total PickUp Point (diluar SS)</div>
+    <div class="Rekapitulasi-grid">
       <div class="rk"><div class="rk-num" id="r-paket">0</div><div class="rk-lbl">Paket</div></div>
       <div class="rk"><div class="rk-num" id="r-mb">0</div><div class="rk-lbl">MB</div></div>
       <div class="rk"><div class="rk-num" id="r-bp">0</div><div class="rk-lbl">BP</div></div>
@@ -626,7 +626,7 @@ body{
 <div class="bar">
   <div class="bar-row">
     <button class="btn-cgkg" id="btn-report-ss" onclick="reportSSPicker()">📋 Report SS</button>
-    <button class="btn-wa" onclick="showReport('all')">✅ Report Keseluruhan</button>
+    <button class="btn-wa" onclick="showReport('all')">✅ Kirim Laporan!</button>
   </div>
   <div class="bar-hint">Tap untuk preview → kirim WhatsApp & GSheet</div>
 </div>
@@ -677,7 +677,7 @@ body{
 
 <script>
 // ==============================================
-// GANTI STRING INI DENGAN URL WEB APP APPS SCRIPT ANDA
+// URL WEB APP GOOGLE APPS SCRIPT
 const GSHEET_URL = "https://script.google.com/macros/s/AKfycbxCGYT9KiuZfwxvrVmv96vBumCVu9kVGUFG90PF9NOUAEMUOqmDTzKk7ifBRxWqGPr3/exec";
 // ==============================================
 
@@ -756,7 +756,6 @@ const NAMA_BAKU = [
 function renderDatalistBaku() {
   const dl = $('list-nama-baku');
   if(!dl) return;
-  // Mengurutkan & menghapus duplikasi nama
   const uniqueNames = [...new Set(NAMA_BAKU)].sort();
   dl.innerHTML = uniqueNames.map(nama => `<option value="${esc(nama)}">`).join('');
 }
@@ -791,7 +790,7 @@ function updateDateHeader(){
   $('subbar-day').textContent=`${days[d.getDay()]} · ${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
 }
 
-// ── REKAP & PROGRESS UX ──
+// ── Rekapitulasi & PROGRESS UX ──
 function stopIds(){ return [...document.querySelectorAll('.stop')].map(el=>+el.id.split('-')[1]); }
 function rekal(){
   let p=0, m=0, b=0;
@@ -811,7 +810,7 @@ function rekal(){
 function updateProgressUI() {
   const ids = stopIds();
   if (ids.length === 0) {
-    $('progress-text').textContent = 'Belum ada TITIK JEMPUT';
+    $('progress-text').textContent = 'Belum ada PickUp Point';
     $('progress-bar').style.width = '0%';
     return;
   }
@@ -1173,7 +1172,7 @@ function resetModal(){
 
 // ── HARI BARU ──
 function newDay(){
-  if(!confirm('Reset data harian?\n(Nama TITIK JEMPUT tetap tersimpan)')) return;
+  if(!confirm('Reset data harian?\n(Nama PickUp Point tetap tersimpan)')) return;
   $('f-tgl').value=new Date().toISOString().split('T')[0];
   $('f-noted').value='';
   ['brkt','hub'].forEach(k=>_clearJam(k));
@@ -1319,7 +1318,7 @@ function showReport(mode,ssIdx){
   _previewMode=mode; _previewSSIdx=ssIdx;
   const txt=mode==='ss'?buildSSReport(ssIdx):buildAllReport();
   currentReport=txt;
-  $('preview-title').textContent=mode==='ss'?('Report '+ssName(ssIdx)):'Report Keseluruhan';
+  $('preview-title').textContent=mode==='ss'?('Report '+ssName(ssIdx)):'Kirim Laporan!';
   $('preview-text').textContent=txt;
   $('preview-ov').classList.add('open');
 }
@@ -1340,11 +1339,6 @@ function sendWa(){
 
 // ── SEND TO GSHEET & WA ──
 function sendToGSheet() {
-  if (GSHEET_URL === "https://script.google.com/macros/s/AKfycbxCGYT9KiuZfwxvrVmv96vBumCVu9kVGUFG90PF9NOUAEMUOqmDTzKk7ifBRxWqGPr3/exec") {
-    toast('⚠️ URL Google Script belum diisi di kode!');
-    return;
-  }
-
   const btn = $('btn-gsheet');
   btn.textContent = '⏳ Mengirim...';
   btn.disabled = true;
@@ -1517,7 +1511,7 @@ setInterval(checkNewDay, 60000);
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#1a1917"/><text x="256" y="340" font-size="280" text-anchor="middle" font-family="sans-serif">🚚</text></svg>`;
   const iconUrl='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)));
   document.getElementById('pwa-icon').href=iconUrl;
-  const manifest={name:'Bulky Report',short_name:'BTS',display:'standalone',background_color:'#f5f4f1',theme_color:'#0a0a0a',orientation:'portrait',icons:[{src:iconUrl,sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
+  const manifest={name:'Daily Report',short_name:'BTS',display:'standalone',background_color:'#f5f4f1',theme_color:'#0a0a0a',orientation:'portrait',icons:[{src:iconUrl,sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
   const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
   document.getElementById('pwa-manifest').href=URL.createObjectURL(blob);
   if('serviceWorker' in navigator){
