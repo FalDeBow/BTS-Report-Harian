@@ -544,7 +544,7 @@ body{
   <div class="di">
     <div class="di-icon">🚚</div>
     <div class="di-info">
-      <div class="di-title">BTS Report Daily</div>
+      <div class="di-title">Bulky Transport Report</div>
       <div class="di-sub" id="di-date">--/--/----</div>
     </div>
     <div class="di-pill" id="pill">Draft</div>
@@ -678,7 +678,7 @@ body{
 <script>
 // ==============================================
 // GANTI STRING INI DENGAN URL WEB APP APPS SCRIPT ANDA
-const GSHEET_URL = "https://script.google.com/macros/s/AKfycbxYrGfEttbGo3JHNx4waOvHdXx32lOU3Ti7LjPxNKHFixuQZ4JnvT6_Wh4vqjHCTFNt/exec";
+const GSHEET_URL = "https://script.google.com/macros/s/AKfycbw9SaDeUgfTVb95rz53khZvpBbE5zdbQgiC90fcJdq1f6DzrXjITY7V7M_vg1BZ1BcQ/exec";
 // ==============================================
 
 // ── DAFTAR NAMA BAKU TITIK JEMPUT / KIRIM ──
@@ -1340,7 +1340,7 @@ function sendWa(){
 
 // ── SEND TO GSHEET & WA ──
 function sendToGSheet() {
-  if (GSHEET_URL === "https://script.google.com/macros/s/AKfycbxYrGfEttbGo3JHNx4waOvHdXx32lOU3Ti7LjPxNKHFixuQZ4JnvT6_Wh4vqjHCTFNt/exec") {
+  if (GSHEET_URL === "https://script.google.com/macros/s/AKfycbw9SaDeUgfTVb95rz53khZvpBbE5zdbQgiC90fcJdq1f6DzrXjITY7V7M_vg1BZ1BcQ/exec") {
     toast('⚠️ URL Google Script belum diisi di kode!');
     return;
   }
@@ -1517,7 +1517,7 @@ setInterval(checkNewDay, 60000);
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="#1a1917"/><text x="256" y="340" font-size="280" text-anchor="middle" font-family="sans-serif">🚚</text></svg>`;
   const iconUrl='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)));
   document.getElementById('pwa-icon').href=iconUrl;
-  const manifest={name:'BTS Report',short_name:'BTS',display:'standalone',background_color:'#f5f4f1',theme_color:'#0a0a0a',orientation:'portrait',icons:[{src:iconUrl,sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
+  const manifest={name:'Bulky Report',short_name:'BTS',display:'standalone',background_color:'#f5f4f1',theme_color:'#0a0a0a',orientation:'portrait',icons:[{src:iconUrl,sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
   const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
   document.getElementById('pwa-manifest').href=URL.createObjectURL(blob);
   if('serviceWorker' in navigator){
