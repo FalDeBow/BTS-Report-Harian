@@ -677,8 +677,8 @@ body{
 
 <script>
 // ==============================================
-// URL WEB APP GOOGLE APPS SCRIPT
-const GSHEET_URL = "https://script.google.com/macros/s/AKfycbxCGYT9KiuZfwxvrVmv96vBumCVu9kVGUFG90PF9NOUAEMUOqmDTzKk7ifBRxWqGPr3/exec";
+// URL WEB APP GOOGLE APPS SCRIPT TERBARU
+const GSHEET_URL = "https://script.google.com/macros/s/AKfycbzoh9cjjQv-8DcsFzKUd3-vCxTENyjDaxkPsNRB9nQp4DHRITgNP3YbJ1n1M69G4JUr/exec";
 // ==============================================
 
 // ── DAFTAR NAMA BAKU TITIK JEMPUT / KIRIM ──
@@ -1337,15 +1337,47 @@ function sendWa(){
   closePreview();
 }
 
-// ── SEND TO GSHEET & WA ──
+// ── SEND TO GSHEET & WA (PRESISI DETAIL ROW BY ROW) ──
 function sendToGSheet() {
   const btn = $('btn-gsheet');
   btn.textContent = '⏳ Mengirim...';
   btn.disabled = true;
 
-  const totalPaket = $('r-paket').textContent.replace(/\D/g, '');
-  const totalMb = $('r-mb').textContent;
-  const totalBp = $('r-bp').textContent;
+  const details = [];
+
+  // 1. Ekstrak Data SS (Staging Store)
+  ssIds().forEach(i => {
+    details.push({
+      tipe: 'SS',
+      nama: ssName(i),
+      trip: '-',
+      paket: +($(`ss-paket-${i}`)?.value || 0),
+      mb: +($(`ss-mb-${i}`)?.value || 0),
+      bp: +($(`ss-bp-${i}`)?.value || 0),
+      eta: '-',
+      tiba: $(`ssjbtn-tiba-${i}`)?.dataset?.t || '-',
+      brkt: $(`ssjbtn-brkt-${i}`)?.dataset?.t || '-',
+      ket: '-',
+      loc: '-'
+    });
+  });
+
+  // 2. Ekstrak Data PickUp Point Presisi per Lokasi
+  stopIds().forEach((i, idx) => {
+    details.push({
+      tipe: `PickUp Point ${idx + 1}`,
+      nama: $(`sn-${i}`)?.value || `PickUp Point ${idx + 1}`,
+      trip: $(`st-${i}`)?.value || '-',
+      paket: +($(`sp-${i}`)?.value || 0),
+      mb: +($(`sm-${i}`)?.value || 0),
+      bp: +($(`sb-${i}`)?.value || 0),
+      eta: $(`se-${i}`)?.value || '-',
+      tiba: $(`tbtn-Tiba-${i}`)?.dataset?.t || '-',
+      brkt: $(`tbtn-Brkt-${i}`)?.dataset?.t || '-',
+      ket: $(`sk-${i}`)?.value || '-',
+      loc: $(`tbtn-Tiba-${i}`)?.dataset?.loc || '-'
+    });
+  });
 
   const payload = {
     tanggal: $('f-tgl').value,
@@ -1355,10 +1387,7 @@ function sendToGSheet() {
     rute: $('f-rute').value || '-',
     hub_str: $('jbtn-brkt')?.dataset?.t || '-',
     tiba_hub: $('jbtn-hub')?.dataset?.t || '-',
-    total_paket: totalPaket,
-    total_mb: totalMb,
-    total_bp: totalBp,
-    laporan_teks: currentReport 
+    details: details
   };
 
   fetch(GSHEET_URL, {
@@ -1371,7 +1400,7 @@ function sendToGSheet() {
   .then(response => response.json())
   .then(data => {
     if(data.status === "success") {
-      toast('✅ Data berhasil masuk ke GSheet!');
+      toast('✅ Data presisi per titik berhasil dikirim ke GSheet!');
     } else {
       toast('⚠️ Terhubung, tapi ada kendala pada sheet.');
     }
@@ -1381,7 +1410,7 @@ function sendToGSheet() {
   })
   .catch(err => {
     console.error(err);
-    toast('❌ Gagal sinkronisasi. GSheet URL salah atau timeout.');
+    toast('❌ Gagal sinkronisasi. Cek URL WebApp.');
     btn.textContent = '📊 GSheet & WA';
     btn.disabled = false;
   });
